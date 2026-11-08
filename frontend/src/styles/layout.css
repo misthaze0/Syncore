@@ -1,0 +1,231 @@
+/*
+ * layout —— 从原 global.css（7100+ 行单文件）拆出，按职责组织。
+ * 原文件的区块注释与设计说明原样保留；本文件只做搬运，不改任何规则。
+ * 入口是 global.css（@import 有顺序要求：base 先于组件）。
+ */
+
+/* ==========================================================================
+   布局
+   ========================================================================== */
+
+.app {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.main {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ---------- 对话区壁纸 ----------
+   图层压在「顶栏以下那块区域」的最底下（z-index:-1），谁有实底谁就盖住它：
+   欢迎海报是实色 background-color、输入卡片是实色 --panel，
+   于是壁纸天然只出现在「有消息的滚动区」这一块，不需要任何条件判断。
+   ★ 为什么单独占一个 flex 子块，而不是 inset: 52px 0 0 0 盖住整列：
+   顶栏高度是内容撑出来的（实测 62px，不是 min-height 那个 52），写死数字就会
+   把图片上沿留在顶栏底下 —— 半透明之外它还是实色，于是那条边被切成一截脏带。
+   让顶栏自己决定高度，壁纸从它下沿起铺，图片上沿就正好是内容区上沿。
+   不用「给兄弟元素抬 z-index」的写法：.main 里有 position:fixed 的审批遮罩，
+   一旦给它套上 stacking context，遮罩就再也盖不住输入区了。 */
+.main__wallpaper-area {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main__wallpaper {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--chat-wallpaper);
+  /* 用户上传的图可能是铺满、整图看得见，或纹理平铺 —— 每张自己决定 */
+  background-size: var(--chat-wallpaper-size, cover);
+  background-position: var(--chat-wallpaper-position, center);
+  background-repeat: var(--chat-wallpaper-repeat, no-repeat);
+  /* 滑块直给：设置里说 60% 就是 0.6，不按主题打折 */
+  opacity: var(--chat-wallpaper-strength, 0.25);
+}
+
+.main__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 24px;
+  background: var(--bg);
+  flex-shrink: 0;
+  min-height: 52px;
+}
+
+.main__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ---------- 助理顶栏的身份块（侧栏「助理」入口） ---------- */
+
+.assistant-id {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 2px;
+  min-width: 0;
+}
+
+/* ★ 两块各自 nowrap，容器允许换行 —— 少一半都会塌成竖排。
+   顶栏是 flex 且左右抢宽度（右侧按钮组 198px，窄窗口时左边只剩 104px），
+   而中文的 min-content 宽度 = 一个字：不锁死的话浏览器宁可把「本地助理」
+   压成一字一行，也不让按钮组溢出。锁死后挤不下的是整块，掉到第二行，
+   信息一个字都不丢（裁切/省略号在这里都不合适：渠道状态就是要看见的）。 */
+.assistant-id__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* 人设卡头像进顶栏：与图标同占位（14px 行高节奏），裁圆 */
+.assistant-id__avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.assistant-id__channels {
+  /* 它既是读数（绑了没有）也是入口（点了去设置 → 助理），所以是个按钮。
+     按钮壳全部拆掉，只留悬停那一层极淡的底 —— 顶栏里出现一个带边框的控件
+     会比文字更抢眼，抢过「本地助理」本身。 */
+  appearance: none;
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: 3px 6px;
+  margin: -3px -6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.assistant-id__channels:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text);
+}
+
+[data-color-scheme='dark'] .assistant-id__channels:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.assistant-id__channels:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.assistant-id__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-2);
+}
+
+/* 绿色在这套界面里说的是「服务活着」，绛红只说明「凭据在这台机器上」——
+   通道没在跑时微信那头照样没人回话，不能和「已连接」共用一个颜色。 */
+.assistant-id__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.assistant-id__dot--on {
+  background: var(--accent);
+}
+
+.assistant-id__dot--running {
+  background: var(--success);
+}
+
+.main__scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 8px;
+  scroll-behavior: smooth;
+}
+
+.main__inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+/* 目录 / 清单型一级页面（插件市场、知识库）用的宽列。
+   780 是给对话读的宽度，套在卡片目录上只会得到一列巨卡 ——
+   那不是目录，是列表；两列 550 的卡片才比得出差异。 */
+.main__inner--wide {
+  max-width: 1160px;
+}
+
+/* 一级页面顶栏右侧的动作组（刷新 / 扫描 / 添加插件…） */
+.page-shell__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+.page-shell > .main__topbar {
+  flex-wrap: wrap;
+}
+
+.page-shell > .main__topbar > .main__title {
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.page-shell > .main__topbar > .main__title > span {
+  white-space: nowrap;
+}
+
+.main__composer {
+  flex-shrink: 0;
+  padding: 8px 24px 18px;
+  /* 两层叠起来：下面那层把滚过的消息淡出，上面那层给它压一层极淡的绛红。
+     这片阴影区原本是纯中性灰，读起来像系统残留的一条边；换成品牌调以后
+     它才像是「对话区结束了」的一个有意收尾。（不是绿色 —— 那是别家的品牌调） */
+  background:
+    linear-gradient(to top, var(--composer-tint) 0%, transparent 62%),
+    linear-gradient(to top, var(--bg) 70%, transparent);
+  box-shadow: 0 -20px 32px -28px var(--composer-shadow);
+}
+
+.main__composer-inner {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+}

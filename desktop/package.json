@@ -1,0 +1,82 @@
+{
+  "name": "xjms-desktop",
+  "productName": "Syncore",
+  "version": "0.7.0",
+  "description": "Syncore —— 企业级 AI 工作台（Electron 壳）",
+  "private": true,
+  "main": "main.js",
+  "author": "Syncore",
+  "scripts": {
+    "prestart": "npm run build:frontend",
+    "start": "electron .",
+    "build:frontend": "npm --prefix ../frontend run build:desktop",
+    "dist": "npm run build:frontend && electron-builder --win && npm run verify:package",
+    "verify:package": "node scripts/verify-package.cjs"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "node-pty": "^1.1.0"
+  },
+  "build": {
+    "appId": "com.xjms.desktop",
+    "productName": "Syncore",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "pty-host.cjs",
+      "preload.cjs",
+      "pet-state.cjs",
+      "pet-voice.cjs",
+      "package.json",
+      "build/icon.ico"
+    ],
+    "extraResources": [
+      {
+        "from": "../frontend/dist-desktop",
+        "to": "app-dist"
+      },
+      {
+        "from": "pty-host.cjs",
+        "to": "pty-host/pty-host.cjs"
+      },
+      {
+        "from": "node_modules/node-pty",
+        "to": "pty-host/node_modules/node-pty"
+      },
+      {
+        "from": "../backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!**/__pycache__/**",
+          "!**/*.pyc",
+          "!samples/**",
+          "!data/**",
+          "!.venv/**",
+          "!venv/**",
+          "!**/.env",
+          "!**/.env.local",
+          "!**/*.log"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Syncore"
+    }
+  },
+  "allowScripts": {
+    "electron@33.4.11": true
+  }
+}

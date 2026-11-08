@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- 右下角饰 = 同一基准几何旋转 180°（几何说明见 scroll-corner-bl.svg） -->
+  <g transform="rotate(180 16 16)">
+    <g fill="none" stroke-linecap="round">
+      <path d="M29 8 C18 10 10 18 8 29" stroke="#b8934a" stroke-width="1.4"/>
+      <path d="M29 8 C18 10 10 18 8 29" stroke="#ecd692" stroke-width="0.5" opacity="0.8" transform="translate(-0.6 -0.6)"/>
+      <path d="M29 8 c2.6 -0.6 3.4 -2.5 1.9 -4" stroke="#b8934a" stroke-width="1.1"/>
+      <path d="M8 29 c-0.6 2.6 -2.5 3.4 -4 1.9" stroke="#b8934a" stroke-width="1.1"/>
+    </g>
+    <path d="M14.5 20 C16.5 17 19.5 16 22 16.6 C20.5 19.5 17.5 20.8 14.5 20 Z" fill="#c9a74a"/>
+  </g>
+</svg>

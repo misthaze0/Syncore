@@ -1,0 +1,103 @@
+/*
+ * tasks —— 后台任务页（一级入口，/tasks 路由）。
+ * 任务卡片的状态图标语义与 SubtaskPanel 一致，但布局是独立卡片流。
+ */
+
+/* ---------- 任务页（一级入口） ---------- */
+.tasks-page__count {
+  font-size: 11px;
+  color: var(--text-2);
+  background: var(--panel-2);
+  border-radius: 999px;
+  padding: 1px 8px;
+  margin-left: 4px;
+}
+
+.tasks-page__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 12px 14px;
+}
+
+.task-card__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-card__title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-card__status {
+  font-size: 12px;
+  color: var(--text-2);
+  flex-shrink: 0;
+}
+
+.task-card__error {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--danger, #d64545);
+}
+
+/* 中断说明（续跑前必须读的那一句）—— 不是失败，所以不用红色 */
+.task-card__note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.task-card__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* 删除按钮：弱化的危险操作 —— 描边而不填充，与「继续」的主色按钮拉开层级 */
+.task-card__delete {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 2px 9px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.task-card__delete:hover:not(:disabled) {
+  border-color: var(--danger, #d64545);
+  color: var(--danger, #d64545);
+}
+
+.task-card__delete:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.task-card__result {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}

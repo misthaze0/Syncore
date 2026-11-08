@@ -1,0 +1,38 @@
+/*
+ * 全局样式入口 —— 按职责拆分为多个文件（本文件只负责 @import 顺序）。
+ * 拆分动机：7100+ 行的单文件已经无法维护（改一个按钮要在半个文件里找上下文）。
+ * 文件清单与职责见各文件头部注释。
+ */
+
+@import './base.css';
+@import './layout.css';
+@import './common.css';
+@import './sidebar.css';
+@import './titlebar.css';
+@import './chat.css';
+@import './markdown.css';
+@import './composer.css';
+@import './welcome.css';
+@import './conversations.css';
+@import './tasks.css';
+@import './scheduled.css';
+@import './workflows.css';
+@import './workspace.css';
+@import './files.css';
+@import './settings.css';
+@import './console.css';
+@import './hljs.css';
+
+@import './extensions.css';
+
+@import './messages.css';
+@import './workspace-chat.css';
+@import './pages.css';
+@import './question.css';
+@import './salon.css';
+@import './app-theme.css';
+@import './workbench.css';
+@import './feedback.css';
+@import './artifact-preview.css';
+@import './office.css';
+@import './unified.css';

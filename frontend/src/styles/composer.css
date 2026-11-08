@@ -1,0 +1,1528 @@
+/*
+ * composer —— 从原 global.css（7100+ 行单文件）拆出，按职责组织。
+ * 原文件的区块注释与设计说明原样保留；本文件只做搬运，不改任何规则。
+ * 入口是 global.css（@import 有顺序要求：base 先于组件）。
+ */
+
+/* ==========================================================================
+   输入区 —— 卡片 + 托盘（2026-10 改版）
+   --------------------------------------------------------------------------
+   `.composer` 只是定位容器（浮层要相对它摆），真正有边框有底色的是 `.composer__card`。
+   托盘 `.composer__tray` 在卡片**外面**：那排胶囊说的是「这段对话在哪个目录、
+   以什么权限档跑」—— 属于对话环境，不属于这一句话，所以不该挤进正文的框里。
+   色调跟着本项目的品牌走：中性冷灰 + 唯一的绛红点缀，不给界面加第二种绿。
+   ========================================================================== */
+
+/* ---------- 外层容器 ---------- */
+.composer {
+  position: relative;
+}
+
+.composer--dragover .composer__card {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* 输入框上方的附件行 */
+.composer__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 6px 8px;
+}
+
+/* ---------- 卡片本体 ---------- */
+.composer__card {
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  /* 阴影取「带一点绛红的暗调」而不是纯灰：置底时它靠这层与消息流分开，
+     纯黑的投影在浅色主题下会把底栏压成一块脏灰 */
+  box-shadow: 0 10px 30px -20px var(--composer-shadow), 0 1px 2px rgba(16, 24, 40, 0.04);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.composer__card:focus-within {
+  border-color: var(--accent-border);
+  box-shadow: 0 10px 30px -18px var(--composer-shadow), 0 0 0 3px var(--ring);
+}
+
+.composer__textarea {
+  display: block;
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: transparent;
+  max-height: 200px;
+  min-height: 44px;
+  padding: var(--composer-body-pad-top, 13px) 16px 2px;
+}
+
+.composer__textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* ---------- 卡内底部一行：左「+」，右「模型 / 麦克风 / 发送」 ---------- */
+.composer__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px 8px;
+}
+
+.composer__group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.composer__group--right {
+  margin-left: auto;
+}
+
+/* 圆形操作钮：添加 / 麦克风 / 发送 / 停止 */
+.composer__round {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s, border-color 0.14s, transform 0.1s,
+    box-shadow 0.15s, opacity 0.14s;
+}
+
+.composer__round:hover:not(:disabled) {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.composer__round:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.composer__round:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 「+」带一圈细边：它是这一行里唯一的「展开更多」，得和直接动作钮区分开 */
+.composer__add {
+  border: 1px solid var(--border-strong);
+  color: var(--text-2);
+}
+
+.composer__add:hover:not(:disabled) {
+  border-color: var(--text-muted);
+}
+
+/* 有选项偏离默认值时点亮 —— 开关收进菜单以后，这是唯一还能看见状态的出口 */
+.composer__add--lit {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.composer__round--send {
+  width: 34px;
+  height: 34px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.composer__round--send:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.composer__round--send:disabled {
+  background: var(--border-strong);
+  color: var(--panel);
+  opacity: 0.7;
+}
+
+/* 停止钮：深色圆底白图标（生成中的主操作） */
+.composer__round--stop {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.composer__round--stop:hover:not(:disabled) {
+  opacity: 0.85;
+  background: var(--text);
+  color: var(--bg);
+}
+
+.composer__round--recording {
+  background: var(--danger, #dc2626);
+  color: #fff;
+  animation: mic-pulse 1.2s ease-in-out infinite;
+}
+
+.composer__round--processing {
+  background: var(--accent-soft);
+  color: var(--accent);
+  cursor: wait;
+}
+
+@keyframes mic-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.22); }
+  50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0.08); }
+}
+
+/* ---------- 「+」菜单（附件 + 联网 + 深度思考） ---------- */
+.composer__menu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 30;
+  display: grid;
+  gap: 2px;
+  min-width: 272px;
+  max-width: min(320px, 78vw);
+  padding: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  animation: pop-in 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+.composer__menu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 9px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+}
+
+.composer__menu-item:hover:not(:disabled) {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.composer__menu-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.composer__menu-item > svg:first-child {
+  flex: none;
+  margin-top: 2px;
+  color: var(--text-muted);
+}
+
+/* 打开着的开关：图标用 accent，一眼能扫到哪几项是生效的 */
+.composer__menu-item[aria-checked='true'] > svg:first-child {
+  color: var(--accent);
+}
+
+.composer__menu-text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.composer__menu-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.composer__menu-check {
+  flex: none;
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+/* ---------- 模型钮（从顶栏搬进来） ---------- */
+/* 只在后端配了多个候选（`LLM_AVAILABLE_MODELS`）时渲染 —— 见 ChatInput */
+/* 模型钮：常驻在输入框右下角。只有一个候选时也留着 ——
+   弹层底部那项「模型管理」就是它的第二个作用，
+   藏起来只会让人以为「这产品不能换模型」。 */
+.composer__model {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  max-width: 210px;
+  padding: 0 7px 0 9px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.composer__model:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.composer__model-icon {
+  flex: none;
+}
+
+.composer__model-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--text);
+}
+
+.composer__model-caret {
+  flex: none;
+  transition: transform 0.16s;
+}
+
+.composer__model-caret.is-open {
+  transform: rotate(180deg);
+}
+
+/* 弹层贴着右半边长出来（`+` 菜单往右长，这个往左长，都不许越过卡片边缘） */
+.composer__model-menu {
+  right: 0;
+  left: auto;
+  min-width: 248px;
+}
+
+.composer__model-empty {
+  padding: 0 9px 10px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.composer__model-row {
+  align-items: center;
+}
+
+/* 供应商分组：同名模型在多家出现时，靠组名回答「这一条连到哪台」 */
+.composer__model-group {
+  display: grid;
+  gap: 2px;
+}
+
+.composer__model-group + .composer__model-group {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.composer__model-group-label {
+  padding: 2px 9px 3px;
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* 小圆点回答的是「哪个是全局默认」—— 光看模型名分不出来 */
+.composer__model-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.composer__model-dot--default {
+  background: var(--accent);
+}
+
+/* 思考能力角标（始终思考 / 无思考）—— 只标偏离，常态不标 */
+.composer__model-think {
+  flex: none;
+  margin-left: auto;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.composer__model-manage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 9px;
+  border: none;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 10px 10px;
+  background: transparent;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+}
+
+.composer__model-manage:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+/* ---------- 托盘 ---------- */
+.composer__tray {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 9px 6px 0;
+}
+
+.composer__tray-space {
+  flex: 1;
+}
+
+.composer__hint-text {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.composer__chars {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 托盘上的胶囊（工作区 / 本轮权限共用） ---------- */
+.composer__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 280px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 11.5px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.composer__chip:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: var(--panel-2);
+}
+
+/* 生效态用绛红：工作区是「现在真的在这儿干活」，不是可选装饰 */
+.composer__chip--on {
+  color: var(--accent-hover);
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+
+.composer__chip-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.composer__chip-caret {
+  flex: none;
+  transition: transform 0.16s;
+}
+
+.composer__chip-caret.is-open {
+  transform: rotate(180deg);
+}
+
+/* ---------- 本轮权限档位（只能收紧） ---------- */
+/* 声明在 `.composer__chip--on` 之后：收紧档要染 warn 色，不能跟着胶囊走绛红 */
+.turnmode {
+  position: relative;
+  display: inline-flex;
+}
+
+.turnmode__panel {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  display: grid;
+  gap: 2px;
+  width: 300px;
+  max-width: min(300px, calc(100vw - 48px));
+  padding: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  animation: pop-in 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+.turnmode__panel--right {
+  left: auto;
+  right: 0;
+}
+
+.turnmode__opt {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 9px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-2);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+}
+
+.turnmode__opt:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.turnmode__opt--on {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.turnmode__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.turnmode__label {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.turnmode__sub {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.turnmode__check {
+  flex: none;
+  margin-top: 1px;
+}
+
+.composer__mode--on {
+  color: var(--warn);
+  border-color: var(--warn-border);
+  background: var(--warn-soft);
+}
+
+.composer__mode--on:hover {
+  color: var(--warn);
+  background: var(--warn-soft);
+  border-color: var(--warn-border);
+}
+
+/* ---------- 语音/上传等就地错误条 ---------- */
+.composer__error {
+  margin: 8px 6px 0;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* 编辑 / 引用横幅（由 ChatPage 渲染在卡片之上） */
+.composer__editing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 6px 8px;
+  font-size: 12px;
+  color: var(--accent-hover);
+}
+
+/* ==========================================================================
+   玫瑰荆棘 · 鎏金版 —— 输入框的第二种长相（外观设置「对话框」）
+   --------------------------------------------------------------------------
+   设计取「珠宝匣」而不是「贴纸」：整张卡片套一圈香槟金渐变描边（双层
+   background 的 padding-box / border-box 技巧，圆角跟着 border-radius 走），
+   四角压鎏金角饰 —— 上两角是带纹章玫瑰与垂坠红宝石的完整角花，下两角只做
+   收敛的卷草收口（底部是按钮区，华丽要让位给可用）；顶边两角之间再横铺
+   一条红宝石垂链。卡内叠一层从顶部晕开的绛红光，聚焦时金边提亮。
+
+   正文安全：链条最高垂到 padding 盒内约 18px，正文上边距让位到 26px
+   （--composer-body-pad-top）；角饰故意用负偏移压在边框角上，主体在文字区外。
+
+   选择器写成「全局属性命中真卡片」与「小样自己带类」两条并列 —— 设置弹窗里
+   两个选项能同时画出各自的长相，不必为了预览去改全局开关。
+   ========================================================================== */
+
+[data-composer='rose'] .composer__card,
+.cs-pv--rose {
+  position: relative;
+  border: 1px solid transparent;
+  /* 四层角饰 + 丝绒光 + 面板底 + 金边，顺序即叠放次序（先声明的在上） */
+  background:
+    url('../assets/ornaments/rose-corner.svg') left -7px top -7px / 50px 50px no-repeat,
+    url('../assets/ornaments/rose-corner-tr.svg') right -7px top -7px / 50px 50px no-repeat,
+    url('../assets/ornaments/scroll-corner-bl.svg') left -5px bottom -5px / 30px 30px no-repeat,
+    url('../assets/ornaments/scroll-corner-br.svg') right -5px bottom -5px / 30px 30px no-repeat,
+    radial-gradient(130% 100% at 50% 0%, var(--rose-wash), transparent 55%) padding-box,
+    linear-gradient(var(--panel), var(--panel)) padding-box,
+    linear-gradient(135deg, #f2dc96, #b98a2f 26%, #f8ecc0 50%, #a5762a 74%, #f2dc96) border-box;
+  --rose-wash: color-mix(in srgb, var(--accent) 8%, transparent);
+  /* 内圈再描一道极细的金线：渐变边 1px 在缩放下会发虚，这道线把「金属框」的锐度找回来 */
+  box-shadow:
+    0 10px 30px -20px var(--composer-shadow),
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    inset 0 0 0 1px color-mix(in srgb, #c9a74a 22%, transparent);
+}
+
+[data-composer='rose'] .composer__card .composer__textarea {
+  /* 空出垂链占的那条，第一行字不会和红宝石叠在一起 */
+  --composer-body-pad-top: 26px;
+}
+
+/* 顶边红宝石垂链：压在 1px 金边上，两端避开角饰（卡片有 20px 圆角，
+   铺满会在两个上角和角花打架；不能给卡片加 overflow:hidden —— 「+」菜单要冒出去） */
+[data-composer='rose'] .composer__card::before,
+.cs-pv--rose::before {
+  content: '';
+  position: absolute;
+  background: url('../assets/ornaments/ruby-garland.svg') repeat-x left top;
+  pointer-events: none;
+  transition: filter 0.18s;
+}
+
+[data-composer='rose'] .composer__card::before {
+  top: -3px;
+  left: 46px;
+  right: 46px;
+  height: 20px;
+  background-size: 64px 20px;
+}
+
+/* 聚焦：金链提亮，外圈浮起一层金光 —— 只在真的开始打字时出现，平时安静 */
+[data-composer='rose'] .composer__card:focus-within {
+  box-shadow:
+    0 10px 30px -18px var(--composer-shadow),
+    0 0 0 3px color-mix(in srgb, #c9a74a 26%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, #c9a74a 36%, transparent);
+}
+
+[data-composer='rose'] .composer__card:focus-within::before {
+  filter: brightness(1.15) saturate(1.12);
+}
+
+/* 发送钮跟着换礼服：绛红渐变 + 内高光，和金框同属一套语言 */
+[data-composer='rose'] .composer__round--send {
+  background: linear-gradient(150deg, #c13a5c, #7c1a33 72%);
+  box-shadow:
+    0 2px 10px -3px rgba(140, 25, 55, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+[data-composer='rose'] .composer__round--send:hover:not(:disabled) {
+  background: linear-gradient(150deg, #d1466a, #8f2038 72%);
+}
+
+/* 小样按比例收：弹窗里那一格只有 46px 高，角饰与垂链照搬尺寸会把文字行全盖掉 */
+.cs-pv--rose {
+  background:
+    url('../assets/ornaments/rose-corner.svg') left -4px top -4px / 26px 26px no-repeat,
+    url('../assets/ornaments/rose-corner-tr.svg') right -4px top -4px / 26px 26px no-repeat,
+    url('../assets/ornaments/scroll-corner-bl.svg') left -3px bottom -3px / 16px 16px no-repeat,
+    url('../assets/ornaments/scroll-corner-br.svg') right -3px bottom -3px / 16px 16px no-repeat,
+    radial-gradient(130% 100% at 50% 0%, var(--rose-wash), transparent 55%) padding-box,
+    linear-gradient(var(--panel), var(--panel)) padding-box,
+    linear-gradient(135deg, #f2dc96, #b98a2f 26%, #f8ecc0 50%, #a5762a 74%, #f2dc96) border-box;
+}
+
+.cs-pv--rose::before {
+  top: -2px;
+  left: 27px;
+  right: 27px;
+  height: 13px;
+  background-size: 41.6px 13px;
+}
+
+/* ==========================================================================
+   工作区选择器 —— 托盘那颗胶囊和它上方的浮层
+   ========================================================================== */
+
+.workdir {
+  position: relative;
+  display: inline-flex;
+}
+
+.workdir__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.workdir__panel {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 40;
+  display: grid;
+  gap: 3px;
+  width: 344px;
+  max-width: min(344px, calc(100vw - 48px));
+  padding: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  animation: pop-in 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+/* 搜索框平时不画边框，靠底色和面板分层；拿到焦点才把边描出来 */
+.workdir__search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 8px 0 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--panel-2);
+  color: var(--text-muted);
+  transition: border-color 0.13s, background 0.13s, box-shadow 0.13s;
+}
+
+.workdir__search:focus-within {
+  border-color: var(--accent-border);
+  background: var(--panel);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.workdir__search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+}
+
+.workdir__clear {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.workdir__clear:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+/* 分组行只报「有几个」，不额外占高度 */
+.workdir__group {
+  padding: 4px 8px 0;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.workdir__list {
+  display: grid;
+  gap: 2px;
+  max-height: 252px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 0;
+}
+
+.workdir__empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 20px 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.workdir__empty-icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--panel-2);
+  color: var(--text-muted);
+}
+
+/* 首拉时给三行骨架：点开是一片空白，看起来像坏了而不是在加载 */
+.workdir__skeleton {
+  display: grid;
+  gap: 6px;
+  padding: 6px 4px;
+}
+
+.workdir__skeleton i {
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--border) 25%, var(--panel-2) 50%, var(--border) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+.workdir__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background 0.13s, border-color 0.13s;
+}
+
+/* 键盘高亮和鼠标悬停共用一套底色，否则两套输入各看各的 */
+.workdir__item:hover,
+.workdir__item.is-cursor {
+  background: var(--panel-2);
+}
+
+.workdir__item--active,
+.workdir__item--active:hover,
+.workdir__item--active.is-cursor {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+}
+
+/* 图标垫一层方底：一列下来对齐线是齐的，彩色图标也不会像贴纸 */
+.workdir__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+}
+
+.workdir__item--active .workdir__icon {
+  background: var(--panel);
+  border-color: var(--accent-border);
+}
+
+.workdir__text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.workdir__name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.workdir__path {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 目录被用户在资源管理器里删掉了：这不是「没选中」，要说得出来 */
+.workdir__path--gone {
+  color: var(--danger);
+}
+
+.workdir__check {
+  flex: none;
+  color: var(--accent);
+}
+
+.workdir__remove {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s, background 0.12s, color 0.12s;
+}
+
+.workdir__item:hover .workdir__remove,
+.workdir__item.is-cursor .workdir__remove {
+  opacity: 1;
+}
+
+.workdir__remove:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---------- 底部两个动作：新建工作区 / 默认工作区 ----------
+   「不指定工作区」这一档已经从界面里去掉了（理由写在 WorkdirPicker.tsx 顶部）。
+   两行各占满宽度：三个小按钮横向挤在 328px 里既不好点，也读不出哪个是当前状态；
+   而「默认」是新会话长期停着的那一档，值得独占一行并把名字显示出来。 */
+.workdir__foot {
+  display: grid;
+  gap: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.workdir__action {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s, border-color 0.13s;
+}
+
+.workdir__action:hover,
+.workdir__action.is-cursor {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.workdir__action-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.workdir__action-label {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* 右侧那列灰字说明这一档现在是什么：新建 = 一句解释，默认 = 正在用的文件夹名 */
+.workdir__action-hint {
+  margin-left: auto;
+  max-width: 44%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.workdir__action-check {
+  flex: none;
+  color: var(--accent);
+}
+
+/* 默认档是当前状态时整行点亮 —— 否则用户不知道「没选」算不算已经选了 */
+.workdir__action--default.is-active {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+}
+
+.workdir__action--default.is-active .workdir__action-label,
+.workdir__action--default.is-active .workdir__action-icon {
+  color: var(--accent-hover);
+}
+
+.workdir__action--default.is-active .workdir__action-icon {
+  background: var(--panel);
+  border-color: var(--accent-border);
+}
+
+/* 键盘提示只出现在浮层里，不进托盘 */
+.workdir__hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px 0;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.workdir__hint kbd {
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--panel-2);
+  color: var(--text-2);
+  font: 10px var(--mono);
+}
+
+/* ==========================================================================
+   新建工作区弹窗（源文件夹浏览器 + 名称 / 图标 / 颜色）
+   ========================================================================== */
+
+.wdnew {
+  max-width: 560px;
+}
+
+.wdnew__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--panel-2);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.wdnew__close {
+  align-self: flex-start;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s;
+}
+
+.wdnew__close:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.wdnew__body {
+  display: grid;
+  gap: 14px;
+  max-height: min(62vh, 560px);
+  overflow-y: auto;
+}
+
+.wdnew__field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.wdnew__label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.wdnew__drop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  background: var(--panel-2);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.14s, background 0.14s, color 0.14s;
+}
+
+.wdnew__drop:hover,
+.wdnew__drop.is-open {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* 系统对话框开着（或刚点下去还没返回）时别装作还能按 */
+.wdnew__drop:disabled {
+  cursor: default;
+  opacity: 0.66;
+}
+
+.wdnew__drop:disabled:hover {
+  border-color: var(--border-strong);
+  background: var(--panel-2);
+  color: var(--text-muted);
+}
+
+.wdnew__picked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--panel-2);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.wdnew__picked-path {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wdnew__link {
+  flex: none;
+  padding: 3px 7px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--accent-hover);
+  font-family: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.wdnew__link:hover {
+  background: var(--accent-soft);
+}
+
+.wdnew__link--muted {
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+}
+
+/* 桌面端主按钮走系统对话框，这条只管粘贴路径 —— 缩到右边，别跟主按钮抢 */
+.wdnew__manual {
+  justify-self: end;
+  margin-top: -4px;
+}
+
+.wdnew__browser {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--panel);
+  animation: pop-in 0.15s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+.wdnew__roots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wdnew__root {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.13s, color 0.13s, background 0.13s;
+}
+
+.wdnew__root:hover:not(:disabled) {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.wdnew__root.is-active {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+/* 盘符对应的卷没挂载 / 可移动盘被拔掉：留着比藏起来诚实，但要按不下去 */
+.wdnew__root:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.wdnew__bar {
+  display: flex;
+  gap: 6px;
+}
+
+.wdnew__path-input {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  outline: none;
+}
+
+.wdnew__path-input:focus {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.wdnew__up {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.13s, color 0.13s;
+}
+
+.wdnew__up:hover:not(:disabled) {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.wdnew__up:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.wdnew__filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text-muted);
+}
+
+.wdnew__filter-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.wdnew__dirs {
+  display: grid;
+  gap: 2px;
+  max-height: 196px;
+  overflow-y: auto;
+}
+
+.wdnew__dir {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-2);
+  font-family: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.wdnew__dir:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.wdnew__dir-name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wdnew__dir-go {
+  flex: none;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.wdnew__dir:hover .wdnew__dir-go {
+  opacity: 1;
+}
+
+.wdnew__dirs-empty {
+  padding: 16px 8px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.wdnew__truncated {
+  padding: 6px 8px 2px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.wdnew__choose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--accent-border);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.13s, color 0.13s, border-color 0.13s;
+}
+
+.wdnew__choose:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.wdnew__choose:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wdnew__input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  outline: none;
+}
+
+.wdnew__input:focus {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.wdnew__icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wdnew__icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: border-color 0.13s, color 0.13s, background 0.13s;
+}
+
+.wdnew__icon-btn:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+/* 选中态的 color/borderColor 由内联样式给（跟着用户挑的颜色走），这里只补底色 */
+.wdnew__icon-btn.is-active {
+  background: var(--accent-soft);
+}
+
+.wdnew__colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.wdnew__swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.wdnew__swatch:hover {
+  transform: scale(1.14);
+}
+
+/* 选中：底色一圈留白 + 外面一圈描边，保证深色系色块上也看得出「这个是选中的」 */
+.wdnew__swatch.is-active {
+  box-shadow: 0 0 0 2px var(--panel), 0 0 0 3.5px var(--text-2);
+}
+
+.wdnew__error {
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+  font-size: 12px;
+}
+
+/* ==========================================================================
+   朗读按钮（assistant 消息底部）
+   ========================================================================== */
+
+.msg__speak {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.speak-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: inherit;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.speak-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--accent-bg, rgba(79, 70, 229, 0.08));
+}
+
+.speak-btn__error {
+  font-size: 12px;
+  color: var(--danger, #dc2626);
+}
+
+/* ==========================================================================
+   打字指示器
+   ========================================================================== */
+
+.typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 0;
+}
+
+.typing__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.45;
+  animation: bounce 1.25s ease-in-out infinite;
+}
+
+.typing__dot:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.typing__dot:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes bounce {
+  0%,
+  62%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}

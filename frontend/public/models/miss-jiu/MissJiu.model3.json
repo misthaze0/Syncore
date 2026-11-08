@@ -1,0 +1,68 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "miss-jiu.layout.moc3",
+    "Textures": [
+      "miss-jiu.layout.4096/texture_00.png"
+    ],
+    "Physics": "miss-jiu.layout.physics3.json",
+    "DisplayInfo": "miss-jiu.layout.cdi3.json",
+    "Expressions": [
+      {
+        "Name": "微笑",
+        "File": "miss-jiu.layout.smile.exp3.json"
+      },
+      {
+        "Name": "悲伤",
+        "File": "miss-jiu.layout.sad.exp3.json"
+      },
+      {
+        "Name": "生气",
+        "File": "miss-jiu.layout.angry.exp3.json"
+      },
+      {
+        "Name": "惊讶",
+        "File": "miss-jiu.layout.surprised.exp3.json"
+      }
+    ],
+    "Motions": {
+      "Idle": [
+        {
+          "File": "miss-jiu.layout.idle.motion3.json"
+        }
+      ],
+      "Blink": [
+        {
+          "File": "miss-jiu.layout.blink.motion3.json"
+        }
+      ],
+      "Nod": [
+        {
+          "File": "miss-jiu.layout.nod.motion3.json"
+        }
+      ],
+      "Shake": [
+        {
+          "File": "miss-jiu.layout.shake.motion3.json"
+        }
+      ]
+    }
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": [
+        "ParamMouthOpenY"
+      ]
+    }
+  ]
+}

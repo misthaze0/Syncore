@@ -1,0 +1,129 @@
+/*
+ * welcome —— 欢迎态（2026-10 品牌改版）
+ *
+ * 设计意图：欢迎页只有一张克制的品牌海报 ——
+ *   品牌 mark → 小字品牌标识 → 主张名 → 绛红细线 → 一句主张 → 内嵌输入框
+ * 具体做法：
+ * - 背景不用插画，改纯 CSS（顶部绛红柔光 + 34px 极淡网格），深浅主题都成立；
+ * - 不复述能力：没有功能卡片，也没有示例问题 —— 第一次打开的人不需要先读说明书才敢开口；
+ * - 输入框嵌在主视觉里（.main__composer--inline），不再落到底部。
+ * 入口是 global.css（@import 有顺序要求：base 先于组件）。
+ */
+
+/* ==========================================================================
+   欢迎态背景 —— 全幅柔光 + 网格，只在没有消息时出现
+   ========================================================================== */
+
+.main__scroll--welcome {
+  display: flex;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(760px 380px at 50% -8%, var(--welcome-glow), transparent 72%),
+    linear-gradient(var(--welcome-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--welcome-grid) 1px, transparent 1px);
+  background-size: 100% 100%, 34px 34px, 34px 34px;
+  background-repeat: no-repeat, repeat, repeat;
+  background-position: center top, center top, center top;
+}
+
+/* 主视觉在可用高度里居中（下方没有置底输入框，整屏就是一张海报） */
+.main__scroll--welcome .main__inner {
+  margin: auto;
+  width: 100%;
+}
+
+/* ==========================================================================
+   主视觉
+   ========================================================================== */
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 20px 40px;
+}
+
+/* 欢迎页默认展示 Syncore 横版品牌标志；自定义人设头像保留独立样式。 */
+.welcome__mark {
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  display: block;
+  margin-bottom: 26px;
+  box-shadow: 0 10px 28px rgba(139, 30, 63, 0.22), 0 1px 2px rgba(16, 24, 40, 0.28);
+}
+
+[data-color-scheme='dark'] .welcome__mark {
+  box-shadow: 0 10px 30px rgba(201, 85, 111, 0.24), 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 人设卡头像：同一块位置，但裁成圆形 —— 那是一张「脸」，不是应用图标 */
+.welcome__mark--persona {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 品牌标识行：小号、宽字距、全大写 —— 只作气质，不作信息 */
+.welcome__eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.welcome__title {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.22;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+
+/* 绛红细线：整套视觉里唯一的一抹强调色 */
+.welcome__rule {
+  width: 36px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.9;
+  margin-bottom: 18px;
+}
+
+.welcome__brandline {
+  font-size: 14.5px;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+  margin-bottom: 38px;
+}
+
+/* ==========================================================================
+   内嵌输入框 —— 欢迎态下输入框属于主视觉的一部分
+   ========================================================================== */
+
+.main__composer--inline {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 720px;
+  padding: 0;
+  background: none;
+}
+
+/* 内嵌态的输入卡片更挺一点：柔和投影代替置底时的渐变遮挡
+   （2026-10 改版后带边框的是 `.composer__card`，外层 `.composer` 只管定位） */
+.main__composer--inline .composer__card {
+  box-shadow: 0 18px 44px -12px var(--composer-shadow), 0 2px 6px rgba(16, 24, 40, 0.04);
+}
+
+[data-color-scheme='dark'] .main__composer--inline .composer__card {
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   起手式已下线（2026-10-31）—— 欢迎页只留主视觉与输入框，不再摆示例问题
+   ========================================================================== */

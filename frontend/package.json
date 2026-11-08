@@ -1,0 +1,50 @@
+{
+  "name": "xjms-frontend",
+  "private": true,
+  "version": "0.7.0",
+  "type": "module",
+  "description": "Syncore - 企业级 AI 工作台前端（React + TypeScript + Vite）",
+  "scripts": {
+    "brand:sync": "python scripts/sync-brand.py",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "build:desktop": "tsc --noEmit && vite build --mode desktop --outDir dist-desktop",
+    "preview": "vite preview --port 5173",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@esbuild/win32-x64": "^0.28.2",
+    "@rollup/rollup-win32-x64-msvc": "^4.63.5",
+    "@tiptap/extension-highlight": "^3.32.2",
+    "@tiptap/extension-placeholder": "^3.32.2",
+    "@tiptap/extension-table": "^3.32.2",
+    "@tiptap/extension-task-item": "^3.32.2",
+    "@tiptap/extension-task-list": "^3.32.2",
+    "@tiptap/extension-text-align": "^3.32.2",
+    "@tiptap/markdown": "^3.32.2",
+    "@tiptap/pm": "^3.32.2",
+    "@tiptap/react": "^3.32.2",
+    "@tiptap/starter-kit": "^3.32.2",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "@xyflow/react": "^12.12.0",
+    "lucide-react": "^1.48.0",
+    "pixi-live2d-display": "^0.4.0",
+    "pixi.js": "^6.5.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^7.18.4",
+    "rehype-highlight": "^7.0.2",
+    "remark-gfm": "^4.0.0",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}

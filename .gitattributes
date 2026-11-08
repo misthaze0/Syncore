@@ -1,0 +1,14 @@
+# 统一换行符：仓库内与工作区都用 LF。
+# Windows 下 core.autocrlf=true 会在 checkout 时把文本文件转成 CRLF，
+# 结果「什么都没改」却出现整文件 diff。用 eol=lf 固定住。
+* text=auto eol=lf
+
+# 二进制文件不做换行转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

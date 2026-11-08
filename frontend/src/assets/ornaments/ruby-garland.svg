@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="20" viewBox="0 0 64 20">
+  <!--
+    红宝石垂链：一格 64x20，横向平铺。
+    波浪茎两端同高同切线（0 与 64 都在 y=8，两段三次贝塞尔对称），接缝不可见。
+    节点金珠压在接缝（x=0/64 各半颗）与正中 x=32；波峰（x=16）挑一对金叶，
+    波谷（x=48）垂一颗带金托的红宝石，旁边点一粒微芒 —— 每格重心一致。
+  -->
+  <path d="M0 8 C10.7 2.7 21.3 2.7 32 8 C42.7 13.3 53.3 13.3 64 8"
+        fill="none" stroke="#b8934a" stroke-width="1.3" stroke-linecap="round"/>
+  <path d="M0 8 C10.7 2.7 21.3 2.7 32 8 C42.7 13.3 53.3 13.3 64 8"
+        fill="none" stroke="#ecd692" stroke-width="0.5" stroke-linecap="round" opacity="0.85"
+        transform="translate(0 -0.6)"/>
+
+  <!-- 节点金珠（接缝处的左右半颗拼成一整颗） -->
+  <g fill="#c9a74a">
+    <circle cx="0" cy="8" r="1.3"/>
+    <circle cx="64" cy="8" r="1.3"/>
+    <circle cx="32" cy="8" r="1.3"/>
+  </g>
+
+  <!-- 波峰金叶一对 -->
+  <path d="M13 5.4 C15 2.6 18 2 20.2 3.2 C18.6 5.8 15.6 6.6 13 5.4 Z" fill="#c9a74a"/>
+  <path d="M13 5.4 C15 2.6 18 2 20.2 3.2" fill="none" stroke="#ecd692" stroke-width="0.5"/>
+  <path d="M19.5 4.6 C21 2.9 23.2 2.6 24.8 3.4 C23.6 5.3 21.4 5.7 19.5 4.6 Z" fill="#b8934a"/>
+
+  <!-- 波谷垂坠红宝石（金托 + 刻面 + 高光） -->
+  <path d="M48 11.2 L48 13.6" stroke="#b8934a" stroke-width="0.8"/>
+  <path d="M46.4 13.6 L49.6 13.6 L48 15 Z" fill="#c9a74a"/>
+  <path d="M48 14.8 L50.1 16.8 L48 19.4 L45.9 16.8 Z" fill="#a02744"/>
+  <path d="M48 14.8 L50.1 16.8 L48 19.4 Z" fill="#7c1a33"/>
+  <circle cx="46.9" cy="16.3" r="0.5" fill="#f0a8bc"/>
+
+  <!-- 微芒 -->
+  <path d="M40 3.2 L40.5 4.6 L41.9 5.1 L40.5 5.6 L40 7 L39.5 5.6 L38.1 5.1 L39.5 4.6 Z" fill="#f2dc96"/>
+</svg>

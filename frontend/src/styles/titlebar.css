@@ -1,0 +1,162 @@
+/*
+ * titlebar —— 桌面端自绘标题栏（TitleBar 组件，仅 Windows 壳渲染）。
+ *
+ * 整条栏是窗口拖拽区（-webkit-app-region: drag），交互控件显式 no-drag；
+ * 宽高读 titlebar-area-* 环境变量，右端正好让给系统画的窗口三键
+ * （titleBarOverlay），环境变量不可用时退化成 100% / 40px。
+ */
+
+.app-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.app-frame > .app {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+
+.tbar {
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  gap: 2px;
+  width: env(titlebar-area-width, 100%);
+  height: env(titlebar-area-height, 40px);
+  min-height: 40px;
+  padding-left: 6px;
+  background: var(--bg);
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.tbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tbar__icon-btn,
+.tbar__menu-btn {
+  -webkit-app-region: no-drag;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.13s, color 0.13s;
+}
+
+.tbar__icon-btn {
+  width: 30px;
+  height: 26px;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.tbar__icon-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.tbar__icon-btn:hover:not(:disabled),
+.tbar__menu-btn:hover,
+.tbar__menu-btn--open {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text);
+}
+
+[data-color-scheme='dark'] .tbar__icon-btn:hover:not(:disabled),
+[data-color-scheme='dark'] .tbar__menu-btn:hover,
+[data-color-scheme='dark'] .tbar__menu-btn--open {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tbar__icon-btn--active {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-color-scheme='dark'] .tbar__icon-btn--active {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tbar__menus {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+.tbar__menu {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.tbar__menu-btn {
+  height: 26px;
+  padding: 0 11px;
+  font-size: 12.5px;
+  font-family: inherit;
+}
+
+.tbar__dropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  z-index: 90;
+  min-width: 216px;
+  padding: 4px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  animation: fade-in 0.12s ease-out;
+}
+
+.tbar__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tbar__item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-color-scheme='dark'] .tbar__item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tbar__kbd {
+  font-size: 11px;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: inherit;
+}
+
+/* 拖拽区：菜单右侧到窗口三键之前的整段空白 */
+.tbar__spacer {
+  flex: 1;
+}

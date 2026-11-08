@@ -1,0 +1,610 @@
+{
+  "$schema": "./index.schema.json",
+  "updated_at": "2026-11-01",
+  "entries": [
+    {
+      "kind": "skill",
+      "canonical": "article-digest",
+      "name": "长文摘要",
+      "description": "把长文章、报告或网页正文压成\"论点—证据—结论\"三段式摘要，保留数字和限定条件。用户贴一个链接说「读一下这篇」「太长了我看不完」「总结这份报告」时使用。每条结论都标出处段落。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "内容创作",
+      "tags": [
+        "摘要",
+        "长文",
+        "报告"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "article-digest"
+      },
+      "danger_level": "safe",
+      "popularity": 84,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "csv-to-report",
+      "name": "表格清洗与汇总",
+      "description": "把一堆脏表格（合并单元格、空行、列名不统一、多表同构）清洗合并成一张规范总表，并给出可直接汇报的汇总。用户说「这几份表合一下」「做个汇总」「整理成一张表」时使用。口径先对齐，口径不清时不出数。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "数据分析",
+      "tags": [
+        "表格",
+        "清洗",
+        "汇总"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "csv-to-report"
+      },
+      "danger_level": "safe",
+      "popularity": 83,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "daily-brief",
+      "name": "每日晨报",
+      "description": "汇编每日晨报：今天的日程、昨天没做完的待办、需要主动提醒用户的事，压成一段能 30 秒读完的早间简报。用户说「早报」「今天有什么安排」「给我过一遍今天」时使用。只取材本机日程与长期记忆，不联网。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "办公效率",
+      "tags": [
+        "晨报",
+        "日程",
+        "提醒"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "daily-brief"
+      },
+      "danger_level": "safe",
+      "popularity": 88,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "doc-polish",
+      "name": "文稿润色",
+      "description": "在保住原意的前提下改稿：删冗词、理顺逻辑、统一术语、按目标读者调整语气。用户说「润色一下」「这段读着别扭」「改得更正式/更口语」「帮我压到 N 字」时使用。改动逐处可回看，不悄悄换掉事实表述。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "内容创作",
+      "tags": [
+        "润色",
+        "改写",
+        "术语统一"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "doc-polish"
+      },
+      "danger_level": "safe",
+      "popularity": 86,
+      "featured": false
+    },
+    {
+      "kind": "skill",
+      "canonical": "email-triage",
+      "name": "邮件摘要与回稿",
+      "description": "把一批往来邮件整理成「要我做什么」的摘要，并起草回复。用户说「这几封邮件看一下」「帮我回一下」「今天邮件有什么」时使用。产出按\"必须回 / 等一等 / 不用回\"分档，每条带原文引用；起草的回复只写事实与安排，情绪和承诺一律留给用户定。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "办公效率",
+      "tags": [
+        "邮件",
+        "摘要",
+        "回稿"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "email-triage"
+      },
+      "danger_level": "safe",
+      "popularity": 91,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "expense-monthly",
+      "name": "账单月度归类",
+      "description": "把一个月的银行或支付账单流水归类、算出结构占比、挑出异常项（重复扣款、涨价、没印象的交易）。用户说「这个月钱花哪了」「对一下账单」「月度开销汇总」时使用。归类拿不准的单列出来问，不硬分。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "金融财务",
+      "tags": [
+        "账单",
+        "记账",
+        "月度汇总"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "expense-monthly"
+      },
+      "danger_level": "safe",
+      "popularity": 82,
+      "featured": false
+    },
+    {
+      "kind": "skill",
+      "canonical": "md-to-office",
+      "name": "转 Word / Excel / PPT",
+      "description": "把 Markdown 或纯文本稿转成可交付的 Word、Excel、PPT 文件，并处理表格、标题层级和分页。用户说「转成 Word」「做成 PPT」「导出成表格」「给我个办公格式」时使用。转换前先报结构核对，转完说清文件路径。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "文档处理",
+      "tags": [
+        "转换",
+        "Word",
+        "PPT"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "md-to-office"
+      },
+      "danger_level": "safe",
+      "popularity": 81,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "meeting-minutes",
+      "name": "会议纪要",
+      "description": "把会议录音转写、聊天记录或零散笔记整理成结构化会议纪要。用户说「整理纪要」「这次会记一下」「把刚才的会总结一下」时使用。产出结论 / 决定 / 待办三段，待办必须带负责人与期限，指不回出处的内容当场问清而不是猜。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "办公效率",
+      "tags": [
+        "会议",
+        "纪要",
+        "待办"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "meeting-minutes"
+      },
+      "danger_level": "safe",
+      "popularity": 95,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "reading-cards",
+      "name": "知识卡片",
+      "description": "给论文、书籍章节或长资料做可复用的知识卡片：一句话主张、可引用的原文、和自己的关联。用户说「这篇帮我记一下」「做成卡片」「读完存进知识库」时使用。卡片要能脱离原文被读懂。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "知识管理",
+      "tags": [
+        "卡片",
+        "读书笔记",
+        "文献"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "reading-cards"
+      },
+      "danger_level": "safe",
+      "popularity": 80,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "todo-triage",
+      "name": "待办梳理",
+      "description": "把散在对话、笔记、日程和记忆里的待办收拢成一张可执行的清单。用户说「我现在都有什么要做的」「理一下待办」「有没有漏的事」时使用。每条给来源、下一步动作和是否过期，明确区分\"我能做\"和\"只有你能做\"。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "办公效率",
+      "tags": [
+        "待办",
+        "清单",
+        "提醒"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "todo-triage"
+      },
+      "danger_level": "safe",
+      "popularity": 89,
+      "featured": true
+    },
+    {
+      "kind": "skill",
+      "canonical": "trip-plan",
+      "name": "出行规划",
+      "description": "安排出行：查交通天气、排出按天的行程、检查是否与已有日程冲突。用户说「帮我安排一下周末」「这次出差怎么排」「看看那几天有没有冲突」时使用。每个时间点都留缓冲，冲突要显式列出来。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0",
+      "category": "日程安排",
+      "tags": [
+        "出行",
+        "行程",
+        "冲突检查"
+      ],
+      "install": {
+        "kind": "pack-dir",
+        "path": "trip-plan"
+      },
+      "danger_level": "safe",
+      "popularity": 79,
+      "featured": false
+    },
+    {
+      "kind": "plugin",
+      "canonical": "office-pack",
+      "name": "办公组合包",
+      "description": "会议纪要、每日晨报、邮件摘要、待办梳理四个技能一起装。适合需要把日常文书与信息分拣交给助手处理的团队；装完可以在已安装里单独停用其中任何一个。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.1.0",
+      "category": "办公效率",
+      "tags": [
+        "组合包",
+        "会议",
+        "晨报",
+        "邮件",
+        "待办"
+      ],
+      "components": [
+        {
+          "kind": "skill",
+          "ref": "meeting-minutes",
+          "name": "会议纪要"
+        },
+        {
+          "kind": "skill",
+          "ref": "daily-brief",
+          "name": "每日晨报"
+        },
+        {
+          "kind": "skill",
+          "ref": "email-triage",
+          "name": "邮件摘要与回稿"
+        },
+        {
+          "kind": "skill",
+          "ref": "todo-triage",
+          "name": "待办梳理"
+        }
+      ],
+      "install": {
+        "kind": ""
+      },
+      "danger_level": "safe",
+      "popularity": 90,
+      "featured": true,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "plugin",
+      "canonical": "records-pack",
+      "name": "台账与知识组合包",
+      "description": "账单月度归类、脏表清洗汇总、知识卡片三个技能一起装。适合手上有一堆表和一堆资料要长期查的人。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0.0",
+      "category": "数据分析",
+      "tags": [
+        "组合包",
+        "账单",
+        "表格",
+        "知识库"
+      ],
+      "components": [
+        {
+          "kind": "skill",
+          "ref": "expense-monthly",
+          "name": "账单月度归类"
+        },
+        {
+          "kind": "skill",
+          "ref": "csv-to-report",
+          "name": "表格清洗与汇总"
+        },
+        {
+          "kind": "skill",
+          "ref": "reading-cards",
+          "name": "知识卡片"
+        }
+      ],
+      "install": {
+        "kind": ""
+      },
+      "danger_level": "safe",
+      "popularity": 78,
+      "featured": false,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "plugin",
+      "canonical": "writing-pack",
+      "name": "写作组合包",
+      "description": "文稿润色、长文摘要、Markdown 转办公格式三个技能一起装。写材料的人一条链走完：读进来 → 改到位 → 交得出去。",
+      "source": "official",
+      "publisher": "Syncore",
+      "version": "1.0.0",
+      "category": "内容创作",
+      "tags": [
+        "组合包",
+        "写作",
+        "摘要",
+        "排版"
+      ],
+      "components": [
+        {
+          "kind": "skill",
+          "ref": "doc-polish",
+          "name": "文稿润色"
+        },
+        {
+          "kind": "skill",
+          "ref": "article-digest",
+          "name": "长文摘要"
+        },
+        {
+          "kind": "skill",
+          "ref": "md-to-office",
+          "name": "转 Word / Excel / PPT"
+        }
+      ],
+      "install": {
+        "kind": ""
+      },
+      "danger_level": "safe",
+      "popularity": 85,
+      "featured": true,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-fetch",
+      "name": "网页抓取",
+      "description": "把一个 URL 的正文抓成干净的 Markdown 供助手读取。官方参考实现，走 uvx 启动，需要本机有 uv。",
+      "source": "official",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "信息获取",
+      "tags": [
+        "网页",
+        "抓取",
+        "官方参考"
+      ],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "uvx",
+          "args": [
+            "mcp-server-fetch"
+          ],
+          "danger_level": "moderate",
+          "note": "来自插件市场：网页抓取（上游 pypi: mcp-server-fetch）",
+          "name": "mcp-fetch"
+        }
+      },
+      "danger_level": "moderate",
+      "popularity": 76,
+      "featured": true,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-filesystem",
+      "name": "文件系统高级操作",
+      "description": "跨目录搜索、批量读、结构化改文件。默认允许目录是后端工作目录，装完务必去 MCP 页改成你真正要开的那几个目录。危险等级设为每次问你。走 npx 启动，需要本机有 Node。",
+      "source": "official",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "文档处理",
+      "tags": [
+        "文件",
+        "目录",
+        "官方参考"
+      ],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-filesystem",
+            "."
+          ],
+          "danger_level": "danger",
+          "note": "来自插件市场：文件系统高级操作（上游 npm: @modelcontextprotocol/server-filesystem）",
+          "name": "mcp-filesystem"
+        }
+      },
+      "danger_level": "danger",
+      "popularity": 70,
+      "featured": false,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-git",
+      "name": "Git 仓库操作",
+      "description": "让助手在仓库里查提交、看差异、列分支。默认仓库指向后端工作目录，装完去 MCP 页改成你要的那个。走 uvx 启动。",
+      "source": "official",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "代码开发",
+      "tags": [
+        "git",
+        "仓库",
+        "官方参考"
+      ],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "uvx",
+          "args": [
+            "mcp-server-git",
+            "--repository",
+            "."
+          ],
+          "danger_level": "moderate",
+          "note": "来自插件市场：Git 仓库操作（上游 pypi: mcp-server-git）",
+          "name": "mcp-git"
+        }
+      },
+      "danger_level": "moderate",
+      "popularity": 65,
+      "featured": false,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-memory",
+      "name": "知识图谱记忆",
+      "description": "把人和事、原因和结论连成一张图存下来，适合长期跟踪多方关系。记忆文件落在工作目录，换机器要先备份。走 npx 启动。",
+      "source": "official",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "知识管理",
+      "tags": [
+        "记忆",
+        "图谱",
+        "官方参考"
+      ],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-memory"
+          ],
+          "danger_level": "moderate",
+          "note": "来自插件市场：知识图谱记忆（上游 npm: @modelcontextprotocol/server-memory）",
+          "name": "mcp-memory"
+        }
+      },
+      "danger_level": "moderate",
+      "popularity": 62,
+      "featured": false,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-officecli",
+      "name": "Office 高级编辑",
+      "description": "通过本机 OfficeCLI 编辑 Word、Excel、PPT 的复杂格式、图表、目录与修订。需先安装 officecli 并加入 PATH；本连接器不会下载二进制。原始命令可操作本地路径，执行遵循危险工具审批。",
+      "source": "official",
+      "publisher": "iOfficeAI",
+      "version": "1.0.0",
+      "category": "文档处理",
+      "tags": [
+        "Office",
+        "Word",
+        "Excel",
+        "PPT",
+        "Apache-2.0"
+      ],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "officecli",
+          "args": [
+            "mcp"
+          ],
+          "tool_prefix": "officecli_",
+          "allowed_agents": [
+            "file_agent"
+          ],
+          "danger_level": "danger",
+          "note": "OfficeCLI（Apache-2.0）：https://github.com/iOfficeAI/OfficeCLI 。命令参数不经过原生文件沙箱解析，使用现有危险工具审批；需自行安装并固定已验收版本。",
+          "name": "mcp-officecli"
+        }
+      },
+      "danger_level": "danger",
+      "popularity": 75,
+      "featured": false,
+      "updated_at": "2026-11-01"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-thinking",
+      "name": "分步推理",
+      "description": "把一个复杂问题拆成可回溯的思考步骤，适合需要看到「推理是如何一步步得出」的任务。走 npx 启动。",
+      "source": "official",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "开发工具",
+      "tags": [
+        "推理",
+        "拆解",
+        "官方参考"
+      ],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-sequential-thinking"
+          ],
+          "danger_level": "safe",
+          "note": "来自插件市场：分步推理（上游 npm: @modelcontextprotocol/server-sequential-thinking）",
+          "name": "mcp-thinking"
+        }
+      },
+      "danger_level": "safe",
+      "popularity": 58,
+      "featured": false,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-time",
+      "name": "时间与时区",
+      "description": "当前时间、跨时区换算、日出日落。排跨时区会议和行程时比模型自行推算可靠。走 uvx 启动，需要本机有 uv。",
+      "source": "official",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "开发工具",
+      "tags": [
+        "时间",
+        "时区",
+        "官方参考"
+      ],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "uvx",
+          "args": [
+            "mcp-server-time"
+          ],
+          "danger_level": "safe",
+          "note": "来自插件市场：时间与时区（上游 pypi: mcp-server-time）",
+          "name": "mcp-time"
+        }
+      },
+      "danger_level": "safe",
+      "popularity": 60,
+      "featured": false,
+      "updated_at": "2026-10-18"
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+{
+  "$comment": [
+    "手写的目录条目：组合包 + 连接器。技能条目不在这里 —— 它们从 packs/<名>/SKILL.md",
+    "的 frontmatter metadata 生成（见 scripts/build_market_index.py），因为技能内容和它的",
+    "目录描述写在一个地方才不会漂移。",
+    "改完这个文件要跑一次 python scripts/build_market_index.py 重新生成 index.json。"
+  ],
+
+  "plugins": [
+    {
+      "kind": "plugin",
+      "canonical": "office-pack",
+      "name": "办公组合包",
+      "description": "会议纪要、每日晨报、邮件摘要、待办梳理四个技能一起装。适合需要把日常文书与信息分拣交给助手处理的团队；装完可以在已安装里单独停用其中任何一个。",
+      "publisher": "Syncore",
+      "version": "1.1.0",
+      "category": "办公效率",
+      "tags": ["组合包", "会议", "晨报", "邮件", "待办"],
+      "components": [
+        { "kind": "skill", "ref": "meeting-minutes", "name": "会议纪要" },
+        { "kind": "skill", "ref": "daily-brief", "name": "每日晨报" },
+        { "kind": "skill", "ref": "email-triage", "name": "邮件摘要与回稿" },
+        { "kind": "skill", "ref": "todo-triage", "name": "待办梳理" }
+      ],
+      "danger_level": "safe",
+      "popularity": 90,
+      "featured": true,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "plugin",
+      "canonical": "writing-pack",
+      "name": "写作组合包",
+      "description": "文稿润色、长文摘要、Markdown 转办公格式三个技能一起装。写材料的人一条链走完：读进来 → 改到位 → 交得出去。",
+      "publisher": "Syncore",
+      "version": "1.0.0",
+      "category": "内容创作",
+      "tags": ["组合包", "写作", "摘要", "排版"],
+      "components": [
+        { "kind": "skill", "ref": "doc-polish", "name": "文稿润色" },
+        { "kind": "skill", "ref": "article-digest", "name": "长文摘要" },
+        { "kind": "skill", "ref": "md-to-office", "name": "转 Word / Excel / PPT" }
+      ],
+      "danger_level": "safe",
+      "popularity": 85,
+      "featured": true,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "plugin",
+      "canonical": "records-pack",
+      "name": "台账与知识组合包",
+      "description": "账单月度归类、脏表清洗汇总、知识卡片三个技能一起装。适合手上有一堆表和一堆资料要长期查的人。",
+      "publisher": "Syncore",
+      "version": "1.0.0",
+      "category": "数据分析",
+      "tags": ["组合包", "账单", "表格", "知识库"],
+      "components": [
+        { "kind": "skill", "ref": "expense-monthly", "name": "账单月度归类" },
+        { "kind": "skill", "ref": "csv-to-report", "name": "表格清洗与汇总" },
+        { "kind": "skill", "ref": "reading-cards", "name": "知识卡片" }
+      ],
+      "danger_level": "safe",
+      "popularity": 78,
+      "updated_at": "2026-10-18"
+    }
+  ],
+
+  "connectors": [
+    {
+      "kind": "mcp",
+      "canonical": "mcp-officecli",
+      "name": "Office 高级编辑",
+      "description": "通过本机 OfficeCLI 编辑 Word、Excel、PPT 的复杂格式、图表、目录与修订。需先安装 officecli 并加入 PATH；本连接器不会下载二进制。原始命令可操作本地路径，执行遵循危险工具审批。",
+      "publisher": "iOfficeAI",
+      "version": "1.0.0",
+      "category": "文档处理",
+      "tags": ["Office", "Word", "Excel", "PPT", "Apache-2.0"],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "officecli",
+          "args": ["mcp"],
+          "tool_prefix": "officecli_",
+          "allowed_agents": ["file_agent"],
+          "danger_level": "danger",
+          "note": "OfficeCLI（Apache-2.0）：https://github.com/iOfficeAI/OfficeCLI 。命令参数不经过原生文件沙箱解析，使用现有危险工具审批；需自行安装并固定已验收版本。"
+        }
+      },
+      "danger_level": "danger",
+      "popularity": 75,
+      "updated_at": "2026-11-01"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-fetch",
+      "name": "网页抓取",
+      "description": "把一个 URL 的正文抓成干净的 Markdown 供助手读取。官方参考实现，走 uvx 启动，需要本机有 uv。",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "信息获取",
+      "tags": ["网页", "抓取", "官方参考"],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "uvx",
+          "args": ["mcp-server-fetch"],
+          "danger_level": "moderate",
+          "note": "来自插件市场：网页抓取（上游 pypi: mcp-server-fetch）"
+        }
+      },
+      "danger_level": "moderate",
+      "popularity": 76,
+      "featured": true,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-time",
+      "name": "时间与时区",
+      "description": "当前时间、跨时区换算、日出日落。排跨时区会议和行程时比模型自行推算可靠。走 uvx 启动，需要本机有 uv。",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "开发工具",
+      "tags": ["时间", "时区", "官方参考"],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "uvx",
+          "args": ["mcp-server-time"],
+          "danger_level": "safe",
+          "note": "来自插件市场：时间与时区（上游 pypi: mcp-server-time）"
+        }
+      },
+      "danger_level": "safe",
+      "popularity": 60,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-git",
+      "name": "Git 仓库操作",
+      "description": "让助手在仓库里查提交、看差异、列分支。默认仓库指向后端工作目录，装完去 MCP 页改成你要的那个。走 uvx 启动。",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "代码开发",
+      "tags": ["git", "仓库", "官方参考"],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "uvx",
+          "args": ["mcp-server-git", "--repository", "."],
+          "danger_level": "moderate",
+          "note": "来自插件市场：Git 仓库操作（上游 pypi: mcp-server-git）"
+        }
+      },
+      "danger_level": "moderate",
+      "popularity": 65,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-filesystem",
+      "name": "文件系统高级操作",
+      "description": "跨目录搜索、批量读、结构化改文件。默认允许目录是后端工作目录，装完务必去 MCP 页改成你真正要开的那几个目录。危险等级设为每次问你。走 npx 启动，需要本机有 Node。",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "文档处理",
+      "tags": ["文件", "目录", "官方参考"],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
+          "danger_level": "danger",
+          "note": "来自插件市场：文件系统高级操作（上游 npm: @modelcontextprotocol/server-filesystem）"
+        }
+      },
+      "danger_level": "danger",
+      "popularity": 70,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-memory",
+      "name": "知识图谱记忆",
+      "description": "把人和事、原因和结论连成一张图存下来，适合长期跟踪多方关系。记忆文件落在工作目录，换机器要先备份。走 npx 启动。",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "知识管理",
+      "tags": ["记忆", "图谱", "官方参考"],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-memory"],
+          "danger_level": "moderate",
+          "note": "来自插件市场：知识图谱记忆（上游 npm: @modelcontextprotocol/server-memory）"
+        }
+      },
+      "danger_level": "moderate",
+      "popularity": 62,
+      "updated_at": "2026-10-18"
+    },
+    {
+      "kind": "mcp",
+      "canonical": "mcp-thinking",
+      "name": "分步推理",
+      "description": "把一个复杂问题拆成可回溯的思考步骤，适合需要看到「推理是如何一步步得出」的任务。走 npx 启动。",
+      "publisher": "Model Context Protocol",
+      "version": "1.0.0",
+      "category": "开发工具",
+      "tags": ["推理", "拆解", "官方参考"],
+      "install": {
+        "kind": "mcp-server",
+        "server": {
+          "transport": "stdio",
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+          "danger_level": "safe",
+          "note": "来自插件市场：分步推理（上游 npm: @modelcontextprotocol/server-sequential-thinking）"
+        }
+      },
+      "danger_level": "safe",
+      "popularity": 58,
+      "updated_at": "2026-10-18"
+    }
+  ]
+}

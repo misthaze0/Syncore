@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "plugin": "builtin-office",
+  "first_party": {
+    "paths": ["app/office", "app/agents/tools/builtin/office.py"],
+    "provenance": "本项目独立编写业务实现与适配接口，未导入候选 GitHub 仓库的实现源码或技能正文。第三方依赖的许可证独立适用。"
+  },
+  "python_roots": ["pypdf", "python-docx", "openpyxl", "python-pptx"],
+  "references": [
+    {"name": "pypdf", "license": "BSD-3-Clause", "source": "https://github.com/py-pdf/pypdf/blob/main/LICENSE"},
+    {"name": "python-docx", "license": "MIT", "source": "https://github.com/python-openxml/python-docx/blob/master/LICENSE"},
+    {"name": "python-pptx", "license": "MIT", "source": "https://github.com/scanny/python-pptx/blob/master/LICENSE"},
+    {"name": "openpyxl", "license": "MIT", "source": "https://foss.heptapod.net/openpyxl/openpyxl/-/blob/branch/3.1/LICENCE.rst"}
+  ],
+  "external_adapters": [
+    {"name": "Filee", "bundled": true, "review": "release-and-transitive-engines-required", "source": "https://github.com/KnifeLemon/Filee"},
+    {"name": "OfficeCLI", "bundled": false, "review": "release-notices-and-dependencies-required", "source": "https://github.com/iOfficeAI/OfficeCLI"},
+    {"name": "MarkItDown", "bundled": false, "review": "optional-python-dependencies-required", "source": "https://github.com/microsoft/markitdown"},
+    {"name": "Docling", "bundled": false, "review": "optional-dependencies-and-model-weights-required", "source": "https://github.com/docling-project/docling"}
+  ],
+  "excluded_default_engines": ["PyMuPDF"],
+  "scope": "只描述办公内置插件。安装包中的其他 Python/Node/原生库、字体、模型权重需按真实分发物另做完整清单，不能据此宣称整产品已通过商用法律审查。"
+}

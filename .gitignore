@@ -1,0 +1,103 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/dist-desktop/
+frontend/dist-preview/
+output/pet-rig-workspace/
+# Vite 进程被中断时留下的临时配置（vite.config.ts.timestamp-*.mjs）
+vite.config.ts.timestamp-*.mjs
+*.timestamp-*.mjs
+
+# Environment
+# 默认忽略部署凭据；前端这两份文件仅包含公开的 API 地址。
+.env
+.env.*
+!.env.example
+!/frontend/.env
+!/frontend/.env.desktop
+*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 捆绑的第三方转换引擎二进制（Filee 便携版，约 150MB）。
+# 与 pip 依赖不同，它不进包索引；离线能力靠这份目录提供，重新部署时
+# 从 GitHub Releases 重新下载解压即可（版本见 .env 注释与目录内容）。
+backend/bin/
+
+# Data（全部为本机运行时数据；出厂技能和市场清单位于 backend/skills、backend/market）
+# 统一排除，避免新增数据库、会话、凭据或用户配置时漏掉路径。
+/backend/data/*
+!/backend/data/uploads/
+/backend/data/uploads/*
+!/backend/data/uploads/.gitkeep
+/data/
+/output/
+
+# 项目测试、测试样本与运行产物不发布。
+tests/
+__tests__/
+fixtures/
+test_*.py
+test-*.py
+*_test.py
+test-*.mjs
+test-*.cjs
+*.test.*
+*.spec.*
+/backend/scripts/*_smoke.py
+/backend/scripts/wechat_probe.py
+/backend/scripts/verify_usage_ledger.py
+/backend/tools/ragas_*
+
+# Docker 运行时数据（配置保留，数据目录忽略）
+# ⚠️ Milvus / Neo4j 的数据不在仓库里：它们 bind 到宿主机 B:\MilvusData / B:\Neo4jData
+#    （见根目录 docker-compose.yml），所以这里只需要忽略 redis 的。
+docker/redis/data/
+
+# Docker volumes
+volumes/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# WorkBuddy（AI 助手的工作记忆，属于本地工具状态，不入库）
+.workbuddy/
+.workbuddy-ai/
+
+# ruff 缓存
+.ruff_cache/
+# Python 检查缓存
+.pytest_cache/
+.mypy_cache/
+
+# TypeScript 增量编译缓存
+*.tsbuildinfo
+
+# desktop/build 中的图标是打包所需的源资源。
+!/desktop/build/
+/desktop/build/*
+!/desktop/build/icon.ico
+
+# Electron 打包产物（electron-builder 输出目录，含 win-unpacked，约 800MB）
+desktop/release/

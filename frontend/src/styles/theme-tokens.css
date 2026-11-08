@@ -1,0 +1,172 @@
+/* Global light, dark and Wine Velvet tokens, shared by pages, portals and the pet. */
+:root {
+  color-scheme: light;
+  --primary: #8b1e3f;
+  --primary-hover: #6f1731;
+  --primary-border: #a7536c;
+  --on-primary: #fff1e8;
+  --salon-gold: var(--text-2);
+  --salon-line: var(--border);
+  --salon-hover: var(--panel-2);
+  --salon-card: linear-gradient(145deg, var(--panel), var(--panel-2));
+  --salon-answer: var(--panel);
+  --salon-canvas: #e9e9ed;
+
+  /* 背景与面板 —— 中性冷灰，不带品牌色调（高级感公式：90% 中性 + 10% 强调色） */
+  --bg: #f6f6f8;
+  --panel: #ffffff;
+  --panel-2: #efeff2;
+  --sidebar-bg: #f1f1f4;
+  --border: #e6e6ea;
+  --border-strong: #d3d3da;
+
+  /* 文字 */
+  --text: #14151a;
+  --text-2: #56585f;
+  --text-muted: #696b75;
+
+  /* 品牌色（绛红 —— 来自品牌标志的杯口弧线） */
+  --accent: #8b1e3f;
+  --accent-hover: #6f1731;
+  --accent-soft: #f7edf0;
+  --accent-border: #e2c3cd;
+  --ring: rgba(139, 30, 63, 0.16);
+
+  /* 用户消息气泡（中性灰，不用品牌色） */
+  --user-bubble: #ececef;
+  --user-bubble-text: #14151a;
+
+  /* 语义色 */
+  --success: #059669;
+  --success-soft: #ecfdf5;
+  --success-border: #a7f3d0;
+  --warn: #b45309;
+  --warn-soft: #fffbeb;
+  --warn-border: #fde68a;
+  --danger: #dc2626;
+  --danger-soft: #fef2f2;
+  --danger-border: #fecaca;
+
+  /* 欢迎区背景（纯 CSS 绘制：绛红柔光 + 极淡网格，不用插画图） */
+  --welcome-glow: rgba(139, 30, 63, 0.06);
+  --welcome-grid: rgba(20, 21, 26, 0.018);
+
+  /* 输入区（2026-10 改版）：卡片投影与底部那层 veil 的色调。
+     两块都带一点绛红而不是纯灰 —— 纯黑投影在浅底上会把底栏压成脏灰，
+     而满屏的绿调又是别人的品牌。 */
+  --composer-shadow: rgba(46, 20, 30, 0.3);
+  --composer-tint: rgba(139, 30, 63, 0.05);
+
+  /* 尺寸 —— 圆角三级：控件 10 / 卡片 14 / 容器 20 */
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  /* 对话正文字号（由顶栏的字号按钮改，见 hooks/useFontSize.ts）——
+     只有这一处定义，消息气泡里的 Markdown / 表格 / 引用都从它继承 */
+  --chat-font: 15px;
+  --sidebar-w: 248px;
+  --settings-nav-w: 264px;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow: 0 4px 14px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 24px 64px rgba(15, 23, 42, 0.24);
+
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --primary: #8f3753;
+  --primary-hover: #a44966;
+  --primary-border: #a75c73;
+  --salon-canvas: #0b0c0f;
+  --bg: #101114;
+  --panel: #17191d;
+  --panel-2: #1f2227;
+  --sidebar-bg: #141619;
+  --border: #262a30;
+  --border-strong: #363b43;
+
+  --text: #e9eaec;
+  --text-2: #a3a6ad;
+  --text-muted: #a0a3ac;
+
+  --accent: #d4778e;
+  --accent-hover: #de7a93;
+  --accent-soft: rgba(201, 85, 111, 0.14);
+  --accent-border: rgba(201, 85, 111, 0.32);
+  --ring: rgba(201, 85, 111, 0.2);
+
+  --user-bubble: #24272c;
+  --user-bubble-text: #e9eaec;
+
+  --success: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.1);
+  --success-border: rgba(52, 211, 153, 0.22);
+  --warn: #fbbf24;
+  --warn-soft: rgba(251, 191, 36, 0.1);
+  --warn-border: rgba(251, 191, 36, 0.22);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.1);
+  --danger-border: rgba(248, 113, 113, 0.22);
+
+  --welcome-glow: rgba(201, 85, 111, 0.09);
+  --welcome-grid: rgba(255, 255, 255, 0.028);
+
+  --composer-shadow: rgba(0, 0, 0, 0.6);
+  --composer-tint: rgba(201, 85, 111, 0.07);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='velvet'] {
+  color-scheme: dark;
+  --primary: #7c334b;
+  --primary-hover: #93435d;
+  --primary-border: #c1839260;
+  --on-primary: #fff1e8;
+  --welcome-glow: #b8737b18;
+  --welcome-grid: #ffffff06;
+  --shadow-sm: 0 1px 2px #16091340;
+  --bg: #241d27;
+  --panel: #30242f;
+  --panel-2: #3a2c38;
+  --sidebar-bg: #281e29;
+  --border: #503c49;
+  --border-strong: #73525f;
+  --text: #f4e8e3;
+  --text-2: #d0b9c3;
+  --text-muted: #b69eab;
+  --accent: #c38b9e;
+  --accent-hover: #d6a1b0;
+  --accent-soft: #74364d35;
+  --accent-border: #a3677d;
+  --ring: #d4af8838;
+  --user-bubble: #50303f;
+  --user-bubble-text: #f8ede8;
+  --salon-gold: #d4af88;
+  --salon-line: #bb958145;
+  --salon-hover: #b8737b1c;
+  --salon-card: linear-gradient(145deg, #342832, #2b232e);
+  --salon-answer: #302530d9;
+  --salon-canvas: #1c171f;
+  --composer-shadow: #16091350;
+  --composer-tint: #9d4c5d0c;
+  --success: #9acbb1;
+  --success-soft: #9acbb112;
+  --success-border: #9acbb140;
+  --warn: #e4c199;
+  --warn-soft: #e4c1990f;
+  --warn-border: #e4c19940;
+  --danger: #f0a7b3;
+  --danger-soft: #f0a7b310;
+  --danger-border: #f0a7b340;
+  --shadow: 0 8px 24px #16091325;
+  --shadow-lg: 0 20px 50px #16091370;
+}
+

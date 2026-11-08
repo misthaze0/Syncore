@@ -1,0 +1,119 @@
+/*
+ * highlight.js token 配色（rehype-highlight 输出的 .hljs-* 类）
+ *
+ * 自写而不引 highlight.js 自带的 github.css / github-dark.css：
+ * 后者是两套全局样式，同时引入会互相覆盖，只引一套又切不了主题。
+ * 这里用 CSS 变量按 data-theme 各给一套（GitHub Light / GitHub Dark 取值），
+ * 作用域收在 .md 里 —— 高亮只该出现在 Markdown 代码块内。
+ */
+
+.md {
+  --hljs-comment: #6a737d;
+  --hljs-keyword: #d73a49;
+  --hljs-string: #032f62;
+  --hljs-number: #005cc5;
+  --hljs-title: #6f42c1;
+  --hljs-type: #6f42c1;
+  --hljs-attr: #005cc5;
+  --hljs-tag-name: #22863a;
+  --hljs-built-in: #e36209;
+  --hljs-meta: #6a737d;
+  --hljs-addition: #22863a;
+  --hljs-deletion: #d73a49;
+}
+
+[data-color-scheme='dark'] .md,
+:root[data-color-scheme='dark'] .md {
+  --hljs-comment: #8b949e;
+  --hljs-keyword: #ff7b72;
+  --hljs-string: #a5d6ff;
+  --hljs-number: #79c0ff;
+  --hljs-title: #d2a8ff;
+  --hljs-type: #ffa657;
+  --hljs-attr: #79c0ff;
+  --hljs-tag-name: #7ee787;
+  --hljs-built-in: #ffa657;
+  --hljs-meta: #8b949e;
+  --hljs-addition: #3fb950;
+  --hljs-deletion: #f85149;
+}
+
+.md .hljs-comment,
+.md .hljs-quote {
+  color: var(--hljs-comment);
+  font-style: italic;
+}
+
+.md .hljs-keyword,
+.md .hljs-selector-tag,
+.md .hljs-subst {
+  color: var(--hljs-keyword);
+}
+
+.md .hljs-string,
+.md .hljs-regexp,
+.md .hljs-doctag,
+.md .hljs-template-string,
+.md .hljs-symbol,
+.md .hljs-bullet {
+  color: var(--hljs-string);
+}
+
+.md .hljs-number,
+.md .hljs-literal {
+  color: var(--hljs-number);
+}
+
+.md .hljs-title,
+.md .hljs-title.function_,
+.md .hljs-section {
+  color: var(--hljs-title);
+}
+
+.md .hljs-title.class_,
+.md .hljs-type,
+.md .hljs-class .hljs-title {
+  color: var(--hljs-type);
+}
+
+.md .hljs-attr,
+.md .hljs-attribute,
+.md .hljs-variable,
+.md .hljs-template-variable,
+.md .hljs-params,
+.md .hljs-selector-attr,
+.md .hljs-selector-class,
+.md .hljs-selector-id {
+  color: var(--hljs-attr);
+}
+
+.md .hljs-tag .hljs-name,
+.md .hljs-name,
+.md .hljs-tag {
+  color: var(--hljs-tag-name);
+}
+
+.md .hljs-built_in,
+.md .hljs-builtin-name {
+  color: var(--hljs-built-in);
+}
+
+.md .hljs-meta {
+  color: var(--hljs-meta);
+}
+
+.md .hljs-addition {
+  color: var(--hljs-addition);
+}
+
+.md .hljs-deletion {
+  color: var(--hljs-deletion);
+}
+
+.md .hljs-emphasis {
+  font-style: italic;
+}
+
+.md .hljs-strong {
+  font-weight: 600;
+}

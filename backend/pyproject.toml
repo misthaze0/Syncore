@@ -1,0 +1,123 @@
+[project]
+name = "xjms-backend"
+version = "0.7.0"
+description = "Syncore - 企业级 AI 工作台后端"
+requires-python = ">=3.11"
+dependencies = [
+    # --- Web 框架 ---
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
+    "sse-starlette>=2.0.0",
+    "python-multipart>=0.0.9",
+
+    # --- 配置与数据校验 ---
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.1.0",
+    # SKILL.md 的 YAML frontmatter（app/skills.py）。langchain-core 事实上会带上它，
+    # 但**我们自己 import**，所以必须自己声明 —— 否则哪天换掉 langchain，
+    # 技能扫描会在一台"依赖都装齐了"的机器上 ImportError。
+    "PyYAML>=6.0",
+
+    # --- LangChain / LangGraph ---
+    "langchain>=0.3.0",
+    "langchain-openai>=0.2.0",
+    "langchain-core>=0.3.0",
+    "langchain-text-splitters>=0.3.0",
+    "langgraph>=0.2.0",
+    "langgraph-checkpoint-redis>=0.1.0",
+
+    # --- 向量数据库 ---
+    # ⚠️ 下界必须跟着**服务端**走，不是「能装就行」：本机服务端是 milvusdb/milvus:v3.0.1，
+    #    而 pymilvus 与 Milvus 只保证前后 2 个 minor 版本互通 —— 写 >=2.4.0 会让
+    #    全新环境可能装到 2.4/2.5，对着 v3.0 服务端在连接或 create_collection 处
+    #    报一个指向"协议"而不是"版本"的错，很难定位。当前实测可用：3.0.2。
+    "pymilvus>=3.0.0",
+
+    # --- 关键词检索 ---
+    "elasticsearch[async]>=8.0.0",   # BM25 路；[async] 会带上 aiohttp
+    "jieba>=0.42.1",                 # 中文预分词（不依赖 ES 插件）
+
+    # --- MCP 工具协议 ---
+    "mcp>=1.0.0",
+
+    # --- 文件解析 ---
+    # 基础 PDF 使用 BSD-3-Clause 的 pypdf；不默认引入 AGPL/商业双许可引擎。
+    "pypdf>=6,<7",
+    "python-docx>=1.1.0",
+    "markdown>=3.5.0",
+    "openpyxl>=3.1.0",
+    # 交付物生成（generate_document）的 PPT 分支；缺少时只有 .pptx 一种格式降级报错，
+    # 其余格式（docx/xlsx/md/csv/txt/html）不受影响 —— 见 app/agents/tools/builtin/doc_ops.py
+    "python-pptx>=0.6.23",
+
+    # --- LLM SDK ---
+    "openai>=1.12.0",
+
+    # --- Redis ---
+    "redis>=5.0.0",
+
+    # --- HTTP ---
+    "httpx>=0.27.0",
+
+    # --- 外部渠道 ---
+    # 微信登录二维码：iLink 网关只回一条登录链接，扫码用的那张图得自己画。
+    # 选 segno 不选 python-qrcode：纯标准库、不带 C 扩展；而且**不联网取图** ——
+    # 登录链接本身就等于一次授权，丢给任何第三方二维码渲染服务都是泄露面。
+    "segno>=1.6.0",
+
+    # --- 本地语音识别（默认 STT 后端）---
+    # sherpa-onnx 自带 ONNX Runtime，不依赖 torch；模型（SenseVoiceSmall int8）
+    # 单独下载到用户目录，不进仓库。
+    "sherpa-onnx>=2.0.1",
+    "numpy>=1.26",
+    # 自定义唤醒词要把汉字转成 KWS 的 ppinyin token。sherpa 自带的
+    # text2token 会无条件 import sentencepiece（ppinyin 根本用不到），
+    # 这里只引 pypinyin，按同一算法自己拼 token。
+    "pypinyin>=0.51",
+]
+
+[project.optional-dependencies]
+office-read = ["markitdown[docx,xlsx,pptx,pdf]>=0.1.0,<1"]
+office-layout = ["docling>=2,<3"]
+dev = [
+    "ruff>=0.6.0",                   # 静态检查（make lint）
+    "packaging>=24",                # 办公依赖图和许可证清单导出
+]
+# 本地 Cross-Encoder 精排后端（RERANK_BACKEND=local 时才需要）
+local-rerank = [
+    "sentence-transformers>=2.7.0",
+]
+# 本地 Embedding 后端（EMBEDDING_BACKEND=local 时才需要）。
+# 与 local-rerank 是**同一个包**（sentence-transformers 会带上 torch），
+# 两个 extra 分开列只是为了让人一眼看出「哪个开关需要它」。
+# ⚠️ 装 torch 时先加 CPU 源，否则 PyPI 上 Windows 版默认是 CUDA 构建（约 2.5G）：
+#     pip install torch --index-url https://download.pytorch.org/whl/cpu
+#     pip install -e ".[local-embedding]"
+local-embedding = [
+    "sentence-transformers>=2.7.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+
+# ---------------------------------------------------------------------------
+# ruff —— 静态检查配置
+#
+# 只启用 F（pyflakes：未使用导入/变量、未定义名字、重复定义）与 E9（语法类错误）。
+# 刻意不开启 E501（行宽）等纯风格规则：本项目的注释密度高，
+# 强行压行宽反而损害可读性。用 `ruff check app` 复查。
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+exclude = ["data", "samples"]
+
+[tool.ruff.lint]
+select = ["F", "E9"]
+# app.main:app 这种「为副作用而导入」的场景显式豁免
+ignore = []

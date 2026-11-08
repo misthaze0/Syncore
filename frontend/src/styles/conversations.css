@@ -1,0 +1,678 @@
+/*
+ * conversations —— 从原 global.css（7100+ 行单文件）拆出，按职责组织。
+ * 原文件的区块注释与设计说明原样保留；本文件只做搬运，不改任何规则。
+ * 入口是 global.css（@import 有顺序要求：base 先于组件）。
+ */
+
+/* ==========================================================================
+   会话历史（Phase 7）
+   ========================================================================== */
+
+/* ---------- 搜索（搜的是对话正文，结果带命中片段） ---------- */
+
+.conv-list__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.conv-list__notice {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--text-2);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.conv-list__notice-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.conv-list__notice-head .btn { flex-shrink: 0; }
+.conv-list__notice strong { font-weight: 500; }
+.conv-list__notice p { margin: 4px 0 8px; }
+.conv-list__notice details { margin-top: 8px; color: var(--text-muted); }
+.conv-list__notice summary { cursor: pointer; }
+
+.conv-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  padding: 0 8px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  transition: border-color 0.14s, background 0.14s;
+}
+
+.conv-search:focus-within {
+  border-color: var(--accent-border);
+  background: var(--bg);
+}
+
+.conv-search__icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.conv-search__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.conv-search__input::placeholder {
+  color: var(--text-muted);
+}
+
+.conv-search__spin,
+.conv-search__clear {
+  flex-shrink: 0;
+}
+
+.conv-search__spin {
+  color: var(--text-muted);
+}
+
+/* 命中一个会话的一块：标题 + 命中处数 + 若干条片段 */
+.search-hit {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px 7px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--panel-2);
+  transition: border-color 0.14s, background 0.14s;
+}
+
+.search-hit:hover {
+  border-color: var(--border);
+}
+
+/* 命中的正好是当前打开的那个会话 —— 与列表里的当前态用同一套视觉 */
+.search-hit--active {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+}
+
+.search-hit__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font-family: inherit;
+}
+
+.search-hit__title {
+  flex: 1;
+  min-width: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-hit__time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.search-hit__meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 一条命中片段：谁说的 + 带高亮的原文 */
+.search-hit__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  margin-top: 3px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.search-hit__role {
+  flex-shrink: 0;
+  margin-top: 1px;
+  padding: 0 5px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 10px;
+  line-height: 15px;
+}
+
+.search-hit__role--user {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.search-hit__text {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  line-height: 1.5;
+  /* 片段最多两行 —— 侧栏不是读正文的地方，用户要的只是「是不是这条」 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-hit__row:hover .search-hit__text {
+  color: var(--text);
+}
+
+.search-hit__text mark {
+  padding: 0 1px;
+  border-radius: 3px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.conv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* 会话行 —— 单行 34px：标题 + 时间；操作钮悬浮时覆盖时间位（ChatGPT 范式） */
+.conv-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  transition: background 0.14s;
+}
+
+.conv-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-color-scheme='dark'] .conv-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* 当前会话 —— 中性深一度底色 + 加粗，不用品牌色（强调色只留给主按钮） */
+.conv-item--active,
+.conv-item--active:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+[data-color-scheme='dark'] .conv-item--active,
+[data-color-scheme='dark'] .conv-item--active:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.conv-item--active .conv-item__title {
+  font-weight: 600;
+}
+
+.conv-item--missing .conv-item__title {
+  opacity: 0.55;
+}
+
+/* 置顶的会话 —— 左侧一道竖线，扫一眼就能和「按时间排的那堆」分开 */
+.conv-item--pinned {
+  border-left: 2px solid var(--accent);
+}
+
+.conv-item__pin {
+  color: var(--accent);
+  margin-right: 4px;
+  vertical-align: -1px;
+  flex-shrink: 0;
+}
+
+.conv-item__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 8px;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+}
+
+.conv-item__title {
+  flex: 1;
+  min-width: 0;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conv-item__time {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: opacity 0.14s;
+}
+
+/* 悬浮时时间让位给「…」入口 */
+.conv-item:hover .conv-item__time {
+  opacity: 0;
+}
+
+/* 平时藏起来：列表要的是「扫一眼找到那个会话」，不是一排图标 */
+.conv-item__more {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.14s;
+}
+
+.conv-item:hover .conv-item__more,
+.conv-item--active .conv-item__more,
+.conv-item--menu .conv-item__more {
+  opacity: 1;
+}
+
+/* 勾选框（多选模式下行首） */
+.conv-check {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  margin-left: 8px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--panel);
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.14s, background 0.14s;
+}
+
+.conv-check--on {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* 勾上的行给一点点底色，一眼看得出这批是要删的 */
+.conv-item--picked {
+  background: var(--accent-soft);
+}
+
+/* ---------- 行菜单（「…」与右键共用）---------- */
+
+.conv-menu {
+  position: fixed;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  min-width: 132px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: var(--shadow-lg);
+  outline: none;
+  animation: conv-menu-in 0.12s ease-out;
+}
+
+@keyframes conv-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.conv-menu__sep {
+  height: 1px;
+  margin: 4px 3px;
+  background: var(--border);
+}
+
+.conv-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 8px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.conv-menu__item:hover {
+  background: var(--panel-2);
+}
+
+.conv-menu__item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+.conv-menu__item svg {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.conv-menu__item--danger,
+.conv-menu__item--danger svg {
+  color: var(--danger);
+}
+
+.conv-menu__item--danger:hover {
+  background: var(--danger-soft);
+}
+
+/* ---------- 多选操作条 ---------- */
+
+.conv-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 8px;
+  padding: 8px 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel-2);
+}
+
+.conv-bar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.conv-bar__text {
+  min-width: 0;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
+.conv-bar__link {
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.conv-bar__link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.conv-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.conv-bar__actions .btn {
+  flex: 1;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+
+.icon-btn:hover {
+  background: var(--panel);
+  color: var(--text);
+}
+
+.icon-btn--danger:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* 处于「开」状态的图标钮（例如已置顶 / 正在看源码） */
+.icon-btn--active {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}
+
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.icon-btn:disabled:hover {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.conv-item--editing {
+  gap: 4px;
+  padding: 4px 6px;
+  background: var(--panel-2);
+  border-color: var(--border-strong);
+}
+
+.conv-item__input {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+}
+
+.conv-item__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.conv-list__foot {
+  margin-top: 8px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 回到底部按钮 ---------- */
+
+/* 挂在输入区容器顶上，而不是 `position: fixed` + 一个写死的 bottom：
+   输入框会随打字长高，写死的数要么压住卡片、要么飘老高；
+   而且 fixed 的 left:50% 是**视口**中心，侧栏一开就偏出对话列。 */
+.scroll-to-bottom {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text-2);
+  box-shadow: var(--shadow);
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.12s;
+}
+
+.scroll-to-bottom:hover {
+  background: var(--panel-2);
+  transform: translateX(-50%) translateY(1px);
+}
+
+/* 回到底部按钮上的未读徽标（离底期间到达的新消息数） */
+.scroll-to-bottom {
+  width: auto;
+  min-width: 36px;
+  padding: 0 10px;
+  border-radius: 18px;
+  gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.scroll-to-bottom__badge {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+}
+
+/* ---------- 加载更早消息（窗口化渲染的折叠入口） ---------- */
+.load-earlier {
+  display: block;
+  margin: 0 auto 16px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text-2);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.load-earlier:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d0d4dc;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b4bac6;
+  background-clip: padding-box;
+}
+
+[data-color-scheme='dark'] ::-webkit-scrollbar-thumb {
+  background: #3c3f4b;
+  background-clip: padding-box;
+}
+
+[data-color-scheme='dark'] ::-webkit-scrollbar-thumb:hover {
+  background: #4c505e;
+  background-clip: padding-box;
+}
+
+@media (max-width: 900px) {
+  /* 移动端：侧栏改为浮层，浮动按钮常驻提供入口（替代旧的整条隐藏） */
+  .sidebar:not(.sidebar--collapsed) {
+    display: flex;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 90;
+    width: min(300px, 82vw);
+    box-shadow: 24px 0 48px rgba(15, 23, 42, 0.18);
+  }
+  .sidebar-reopen--visible {
+    display: grid;
+  }
+  .welcome__grid {
+    grid-template-columns: 1fr;
+  }
+  .welcome__grid--3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .welcome__grid--3 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,323 @@
+/*
+ * 模型提问卡片（`ask_user` 的界面半边）。
+ *
+ * 与审批卡（`.ap-card`，红色、危险）刻意区分：
+ * 这里没有风险，用品牌强调色的细边框 + 面板底色，看起来像一张「待填的表」，
+ * 而不是一个「要你负责的决定」。
+ */
+
+.q-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* 一轮里可能有多张卡（历史重放），间距由容器统一给 */
+.msg__questions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.q-card--compact {
+  margin-top: 8px;
+  padding: 10px 12px;
+  gap: 8px;
+  font-size: 12px;
+}
+
+/* 只读态：不再做任何「等你动手」的暗示 */
+.q-card--answered,
+.q-card--skipped,
+.q-card--timeout,
+.q-card--expired {
+  border-color: var(--border);
+  box-shadow: none;
+  background: var(--panel);
+}
+
+.q-card__head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.q-card--answered .q-card__head,
+.q-card--skipped .q-card__head,
+.q-card--timeout .q-card__head,
+.q-card--expired .q-card__head {
+  color: var(--text-2);
+}
+
+.q-card__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.q-card__clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--warn);
+  font-variant-numeric: tabular-nums;
+}
+
+.q-card__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.q-card__state--answered {
+  color: var(--success);
+}
+
+.q-card__state--timeout {
+  color: var(--warn);
+}
+
+.q-card__state--expired {
+  color: var(--text-muted);
+}
+
+.q-card__questions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.q-question {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.q-question__header {
+  align-self: flex-start;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.q-question__line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.q-question__index {
+  flex: none;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.q-question__text {
+  color: var(--text);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.q-question__multi {
+  flex: none;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.q-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.q-option {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  background: var(--panel);
+  cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.q-option:hover {
+  border-color: var(--border-strong);
+}
+
+.q-option.is-checked {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.q-option:has(input:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.q-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 圆形 = 单选，方形 = 多选（形状本身就是规则，不另写一句说明） */
+.q-option__mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin-top: 1px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  color: #fff;
+  background: transparent;
+}
+
+.q-option--multi .q-option__mark {
+  border-radius: 4px;
+}
+
+.q-option.is-checked .q-option__mark {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.q-option__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.q-option__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.q-option__rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.q-option__desc {
+  color: var(--text-2);
+  font-size: 12px;
+  word-break: break-word;
+}
+
+.q-other input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+}
+
+.q-other input::placeholder {
+  color: var(--text-muted);
+}
+
+.q-other input:focus {
+  outline: none;
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--panel);
+}
+
+/* 只读态的回答 */
+.q-answer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.q-answer__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid var(--accent-border);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 12px;
+}
+
+.q-answer__other {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.q-answer__other::before {
+  content: '“';
+}
+
+.q-answer__other::after {
+  content: '”';
+}
+
+.q-answer__none {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.q-card__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin: 0;
+  color: var(--danger);
+  font-size: 12px;
+}
+
+.q-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}

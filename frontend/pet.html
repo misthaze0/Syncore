@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syncore 桌面助手</title>
+    <!--
+      桌面助手透明窗入口：与主窗的 index.html 平级，由 vite 多入口打包成 dist/pet.html。
+      body 背景全透明（见 pet.css），Electron 透明窗直接穿透到桌面。
+      不放 favicon/theme-color：这个页面不在浏览器里跑，永远不会出现在标签页里。
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/pet-main.tsx"></script>
+  </body>
+</html>

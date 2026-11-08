@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syncore · 企业级 AI 工作台</title>
+    <meta
+      name="description"
+      content="Syncore 企业级 AI 工作台 —— 连接企业资料、Office 文档、知识库与工作流：知识检索 + 多 Agent 协作 + 工具审批"
+    />
+    <!-- 路径写相对形式：web（base=/）与桌面壳（base=./，file:// 加载）都成立 -->
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="icon-192.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="theme-color" content="#16181c" />
+    <script>
+      // Restore the selected palette before styles paint the page.
+      try {
+        const saved = localStorage.getItem('xjms.theme');
+        const theme = ['light', 'dark', 'velvet'].includes(saved) ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.colorScheme = theme === 'light' ? 'light' : 'dark';
+        document.documentElement.style.colorScheme = theme === 'light' ? 'light' : 'dark';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

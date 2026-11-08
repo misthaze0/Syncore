@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://syncore.local/schemas/market-index.json",
+  "title": "插件市场目录（backend/market/index.json）",
+  "description": "index.json 是产物，不要手改：技能条目来自 packs/<名>/SKILL.md 的 frontmatter metadata，组合包与连接器来自 catalog.json，由 scripts/build_market_index.py 合成。",
+  "type": "object",
+  "required": ["entries"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "updated_at": {
+      "type": "string",
+      "description": "条目里最新的更新日期（由脚本取最大值算出，不是构建时间 —— 构建时间会让产物天天过期）"
+    },
+    "entries": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/entry" }
+    }
+  },
+  "definitions": {
+    "entry": {
+      "type": "object",
+      "required": ["kind", "canonical", "name", "description", "category"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["skill", "plugin", "mcp"] },
+        "canonical": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "全目录唯一 ID，也是安装落盘用的名字；技能必须等于 packs/ 下的目录名"
+        },
+        "name": { "type": "string", "description": "卡片上给人看的名字" },
+        "description": {
+          "type": "string",
+          "description": "技能条目里这一句同时是模型判断「该不该用这个技能」的唯一线索，不能空"
+        },
+        "source": { "enum": ["official", "remote", "custom", "local"] },
+        "publisher": { "type": "string" },
+        "version": { "type": "string" },
+        "category": {
+          "type": "string",
+          "description": "目录页分类轨道的取值来源；空字符串的条目只能靠「全部」看到"
+        },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "components": {
+          "type": "array",
+          "description": "仅 plugin：成员引用，ref 必须是本文件里另一条的 canonical",
+          "items": {
+            "type": "object",
+            "required": ["kind", "ref"],
+            "additionalProperties": false,
+            "properties": {
+              "kind": { "enum": ["skill", "mcp"] },
+              "ref": { "type": "string" },
+              "name": { "type": "string", "description": "给人读的提示，生成时会被成员自己的 name 覆盖" }
+            }
+          }
+        },
+        "install": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": ["pack-dir", "zip-url", "mcp-server", ""],
+              "description": "空串只允许出现在 plugin 上（组合包不自己装东西，成员各装各的）"
+            },
+            "path": { "type": "string", "description": "pack-dir：相对 market/packs/ 的目录名" },
+            "url": { "type": "string", "description": "zip-url：http(s) 地址，装时才下载" },
+            "server": {
+              "type": "object",
+              "description": "mcp-server：字段与 /api/mcp 的 POST 体同构（extra=forbid，键名写错是校验失败不是静默丢掉）",
+              "additionalProperties": false,
+              "properties": {
+                "name": { "type": "string" },
+                "transport": { "enum": ["stdio", "streamable_http", "sse"] },
+                "enabled": { "type": "boolean" },
+                "command": { "type": "string" },
+                "args": { "type": "array", "items": { "type": "string" } },
+                "env": { "type": "object", "additionalProperties": { "type": "string" } },
+                "cwd": { "type": "string" },
+                "url": { "type": "string" },
+                "headers": { "type": "object", "additionalProperties": { "type": "string" } },
+                "tool_prefix": { "type": "string" },
+                "danger_level": { "enum": ["safe", "moderate", "danger"] },
+                "allowed_agents": { "type": "array", "items": { "type": "string" } },
+                "note": { "type": "string" }
+              }
+            }
+          }
+        },
+        "danger_level": {
+          "enum": ["safe", "moderate", "danger"],
+          "description": "详情页「装完会多出什么、哪些动作要问你」这句话的来源；放宽权限走工具治理页，不靠改这里"
+        },
+        "required_env": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "装完还缺哪些环境变量；缺了界面画「缺配置」徽标"
+        },
+        "popularity": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "featured": { "type": "boolean", "description": "目录页「精选」筛选，纯展示位" },
+        "updated_at": { "type": "string" }
+      }
+    }
+  }
+}

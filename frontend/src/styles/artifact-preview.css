@@ -1,0 +1,38 @@
+.sheet-preview { display: flex; flex-direction: column; height: 100%; min-height: 0; color: var(--text); }
+.sheet-preview__toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 10px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sheet-preview__toolbar label { display: flex; align-items: center; gap: 6px; font-size: 12px; min-width: 0; }
+.sheet-preview__toolbar select { max-width: 180px; min-width: 60px; padding: 5px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel-2); color: var(--text); }
+.sheet-preview__search { flex: 1; min-width: 120px; width: 120px; padding: 6px 9px; border: 1px solid var(--border); border-radius: 7px; background: var(--panel-2); color: var(--text); font-size: 12px; }
+.sheet-preview__info { padding: 7px 12px; color: var(--text-2); font-size: 11px; border-bottom: 1px solid var(--border); }
+.sheet-preview__formula { display: flex; gap: 12px; padding: 6px 12px; font-size: 11px; font-family: var(--font-mono, monospace); border-bottom: 1px solid var(--border); min-height: 31px; flex-shrink: 0; }
+.sheet-preview__formula span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; color: var(--text-2); }
+.sheet-preview__grid { flex: 1; min-height: 120px; padding: 0; }
+.sheet-preview__grid .artifact-table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; table-layout: fixed; }
+.sheet-preview__grid .artifact-table th, .sheet-preview__grid .artifact-table td { border: 0; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0; }
+.sheet-preview__grid thead th { position: sticky; top: 0; z-index: 2; background: var(--panel-2); height: 28px; font-size: 11px; text-align: center; color: var(--text-2); }
+.sheet-preview__grid tbody th { position: sticky; left: 0; z-index: 1; background: var(--panel-2); width: 38px; min-width: 38px; text-align: center; font-size: 11px; color: var(--text-2); }
+.sheet-preview__grid thead th:first-child { left: 0; z-index: 3; }
+.sheet-preview__grid td { min-width: 140px; max-width: 360px; background: var(--panel); }
+.sheet-preview__grid td button { display: block; width: 100%; min-width: 140px; max-width: 360px; padding: 8px 11px; text-align: left; border: 0; color: inherit; background: transparent; font: inherit; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; cursor: cell; }
+.sheet-preview__grid .sheet-cell--header { background: var(--panel-2); font-weight: 600; }
+.sheet-preview__grid .sheet-cell--selected { outline: 2px solid var(--accent); outline-offset: -2px; }
+.sheet-preview__tabs { display: flex; gap: 4px; overflow-x: auto; flex-shrink: 0; padding: 7px 10px; border-top: 1px solid var(--border); background: var(--panel-2); }
+.sheet-preview__tabs button { flex-shrink: 0; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 7px 12px; border-radius: 6px; border: 1px solid transparent; background: transparent; color: var(--text-2); font-size: 12px; cursor: pointer; }
+.sheet-preview__tabs button[aria-selected="true"] { background: var(--panel); border-color: var(--border); color: var(--accent); font-weight: 600; }
+.sheet-preview__hint { padding: 8px 12px; color: var(--text-2); font-size: 11px; line-height: 1.6; margin: 0; flex-shrink: 0; }
+.artifact-image { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+.artifact-image__scroll { flex: 1; min-height: 0; overflow: auto; padding: 16px; background: repeating-conic-gradient(#8881 0% 25%, transparent 0% 50%) 50% / 20px 20px; }
+.artifact-image__scroll img { display: block; height: auto; margin: auto; }
+.artifact-image__scroll--fit { display: flex; align-items: center; justify-content: center; }
+.artifact-image__scroll--fit img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.artifact-media { padding: 20px; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; }
+.artifact-media video, .artifact-media audio { max-width: 100%; max-height: 80%; }
+.artifact-media p { color: var(--text-2); font-size: 12px; }
+.artifact-document { height: 100%; overflow: auto; }
+.artifact-document pre { padding: 20px; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.9; }
+.artifact-document__page { padding: 18px 22px; color: var(--text); background: var(--panel); min-height: 100%; }
+.artifact-document__page p { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.9; }
+.artifact-document__page h3 { font-size: 18px; margin: 14px 0; }
+.artifact-document__page .artifact-table__scroll { padding: 8px 0; }
+
+.artifact-editor { width: 100%; min-height: 180px; height: 35%; resize: vertical; flex-shrink: 0; padding: 14px; border: 0; border-bottom: 1px solid var(--border); background: var(--panel); color: var(--text); font: 13px/1.7 monospace; tab-size: 2; }
