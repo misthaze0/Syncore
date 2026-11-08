@@ -1,10 +1,34 @@
+<div align="center">
+
 # Syncore
 
 企业级 AI 工作台：多智能体协作、混合检索知识库、任务与审批、可扩展技能市场，桌面端与 Web 端双形态。
 
-当前版本 **0.7.0**，处于活跃开发期，内部接口与目录结构可能变动。
+[![中文][badge-zh]][readme-zh] [![English][badge-en]][readme-en]
 
-- [English version](README.en.md)
+![版本 v0.7.0][b-version] [![代码许可][b-license]][license] [![品牌资产][b-brand]][brand-license] ![状态 活跃开发][b-status] ![PRs Welcome][b-prs]
+
+![Python][b-python] ![FastAPI][b-fastapi] ![LangChain][b-langchain] ![Pydantic][b-pydantic] ![React][b-react] ![TypeScript][b-ts] ![Vite][b-vite] ![Electron][b-electron] ![Milvus][b-milvus] ![Elasticsearch][b-es] ![Redis][b-redis] ![Neo4j][b-neo4j] ![Docker][b-docker]
+
+*处于活跃开发期，内部接口与目录结构可能变动。*
+
+</div>
+
+## 界面预览
+
+<table>
+  <tr>
+    <td align="center" width="50%"><b>对话</b><br /><img src="docs/screenshots/chat.png" width="440" alt="对话欢迎页" /></td>
+    <td align="center" width="50%"><b>办公空间</b><br /><img src="docs/screenshots/office.png" width="440" alt="办公空间：模板与文档库" /></td>
+  </tr>
+  <tr>
+    <td align="center"><b>知识库</b><br /><img src="docs/screenshots/knowledge.png" width="440" alt="知识库：混合检索与索引状态" /></td>
+    <td align="center"><b>工作空间</b><br /><img src="docs/screenshots/workspace.png" width="440" alt="工作空间：数字同事与群聊协作" /></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><b>技能市场</b><br /><img src="docs/screenshots/market.png" width="660" alt="技能市场：官方技能与组合包" /></td>
+  </tr>
+</table>
 
 ## 功能特性
 
@@ -67,6 +91,7 @@
 ├── brand/                   # 全部图标 / 形象的源文件（专有，见 BRAND-LICENSE.md）
 ├── desktop/                 # Electron 桌面壳与打包配置
 ├── frontend/                # React + TypeScript + Vite 前端
+├── docs/screenshots/        # 界面预览图
 ├── LICENSE                  # Apache-2.0（代码）
 ├── BRAND-LICENSE.md         # 品牌资产许可（保留所有权利）
 ├── README.md / README.en.md # 项目说明
@@ -189,3 +214,37 @@ cd frontend && npm run typecheck
 
 - **代码**：[Apache License 2.0](LICENSE)，版权 © 2026 Syncore。`backend/`、`frontend/`、`desktop/` 等实现代码可自由使用、修改、分发与商用，需保留版权与许可声明。
 - **品牌资产**：[BRAND-LICENSE.md](BRAND-LICENSE.md) 保留所有权利。`brand/` 源文件、导出的应用图标（favicon、PWA 图标、`desktop/build/icon.ico` 等）与宠物形象（`miss-jiu`）不属于开源范围：仅允许随软件原样分发，禁止修改、挪作他用或用于暗示官方背书。
+
+<!-- ============================================================
+     徽章与链接定义（Markdown 引用式链接，渲染时不可见）
+     改徽章文案 / 版本时只动这一段；徽章语法说明见 https://shields.io
+     语言切换按钮：高亮色 700018 = 当前语言，灰色 9CA3AF = 另一种语言
+     ============================================================ -->
+
+[readme-zh]: README.md
+[readme-en]: README.en.md
+[license]: LICENSE
+[brand-license]: BRAND-LICENSE.md
+
+[badge-zh]: https://img.shields.io/badge/%E4%B8%AD%E6%96%87-700018?style=flat-square
+[badge-en]: https://img.shields.io/badge/English-9CA3AF?style=flat-square
+
+[b-version]: https://img.shields.io/badge/%E7%89%88%E6%9C%AC-v0.7.0-700018?style=flat-square
+[b-license]: https://img.shields.io/badge/%E4%BB%A3%E7%A0%81%E8%AE%B8%E5%8F%AF-Apache--2.0-4CC3FF?style=flat-square
+[b-brand]: https://img.shields.io/badge/%E5%93%81%E7%89%8C%E8%B5%84%E4%BA%A7-%E4%BF%9D%E7%95%99%E6%89%80%E6%9C%89%E6%9D%83%E5%88%A9-DFB303?style=flat-square
+[b-status]: https://img.shields.io/badge/%E7%8A%B6%E6%80%81-%E6%B4%BB%E8%B7%83%E5%BC%80%E5%8F%91-4C1?style=flat-square
+[b-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square
+
+[b-python]: https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white
+[b-fastapi]: https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white
+[b-langchain]: https://img.shields.io/badge/LangChain-7FC8FF?style=flat-square&logo=langchain&logoColor=0B2233
+[b-pydantic]: https://img.shields.io/badge/Pydantic-E97064?style=flat-square&logo=pydantic&logoColor=white
+[b-react]: https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=20232A
+[b-ts]: https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white
+[b-vite]: https://img.shields.io/badge/Vite-9135FF?style=flat-square&logo=vite&logoColor=white
+[b-electron]: https://img.shields.io/badge/Electron-47848F?style=flat-square&logo=electron&logoColor=white
+[b-milvus]: https://img.shields.io/badge/Milvus-00A1EA?style=flat-square&logo=milvus&logoColor=white
+[b-es]: https://img.shields.io/badge/Elasticsearch-005571?style=flat-square&logo=elasticsearch&logoColor=white
+[b-redis]: https://img.shields.io/badge/Redis-FF4438?style=flat-square&logo=redis&logoColor=white
+[b-neo4j]: https://img.shields.io/badge/Neo4j-4581C3?style=flat-square&logo=neo4j&logoColor=white
+[b-docker]: https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white

@@ -1,10 +1,34 @@
+<div align="center">
+
 # Syncore
 
 An enterprise AI workbench: multi-agent collaboration, hybrid-retrieval knowledge base, tasks and approvals, and an extensible skill marketplace — available as a desktop app and a web app.
 
-Current version **0.7.0**, under active development. Internal APIs and directory layout may change.
+[![English][badge-en]][readme-en] [![中文][badge-zh]][readme-zh]
 
-- [中文版说明](README.md)
+![Version v0.7.0][b-version] [![License][b-license]][license] [![Brand assets][b-brand]][brand-license] ![Status Active development][b-status] ![PRs Welcome][b-prs]
+
+![Python][b-python] ![FastAPI][b-fastapi] ![LangChain][b-langchain] ![Pydantic][b-pydantic] ![React][b-react] ![TypeScript][b-ts] ![Vite][b-vite] ![Electron][b-electron] ![Milvus][b-milvus] ![Elasticsearch][b-es] ![Redis][b-redis] ![Neo4j][b-neo4j] ![Docker][b-docker]
+
+*Under active development — internal APIs and directory layout may change.*
+
+</div>
+
+## Preview
+
+<table>
+  <tr>
+    <td align="center" width="50%"><b>Chat</b><br /><img src="docs/screenshots/chat.png" width="440" alt="Chat welcome screen" /></td>
+    <td align="center" width="50%"><b>Office</b><br /><img src="docs/screenshots/office.png" width="440" alt="Office workspace: templates and document library" /></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Knowledge base</b><br /><img src="docs/screenshots/knowledge.png" width="440" alt="Knowledge base: hybrid retrieval and index status" /></td>
+    <td align="center"><b>Workspace</b><br /><img src="docs/screenshots/workspace.png" width="440" alt="Workspace: digital coworkers and group chat" /></td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2"><b>Skill marketplace</b><br /><img src="docs/screenshots/market.png" width="660" alt="Skill marketplace: official skills and bundles" /></td>
+  </tr>
+</table>
 
 ## Features
 
@@ -67,6 +91,7 @@ Current version **0.7.0**, under active development. Internal APIs and directory
 ├── brand/                   # single source of all app icons / artwork (proprietary, see BRAND-LICENSE.md)
 ├── desktop/                 # Electron shell and packaging config
 ├── frontend/                # React + TypeScript + Vite frontend
+├── docs/screenshots/        # UI preview screenshots
 ├── LICENSE                  # Apache-2.0 (code)
 ├── BRAND-LICENSE.md         # brand asset license (all rights reserved)
 ├── README.md / README.en.md # project docs
@@ -189,3 +214,37 @@ This repository uses a **dual-license** structure:
 
 - **Code**: [Apache License 2.0](LICENSE), Copyright © 2026 Syncore. The implementation code in `backend/`, `frontend/` and `desktop/` may be freely used, modified, redistributed and used commercially, provided the copyright and license notices are retained.
 - **Brand assets**: [BRAND-LICENSE.md](BRAND-LICENSE.md) reserves all rights. The `brand/` sources, the exported app icons (favicon, PWA icons, `desktop/build/icon.ico`, etc.) and the pet character (`miss-jiu`) are outside the open-source scope: they may only be distributed unmodified with the software, and may not be modified, reused elsewhere or used to imply official endorsement.
+
+<!-- ============================================================
+     Badge & link definitions (reference-style Markdown links,
+     invisible once rendered). Edit badges here only.
+     Language buttons: 700018 = current language, 9CA3AF = the other one.
+     ============================================================ -->
+
+[readme-en]: README.en.md
+[readme-zh]: README.md
+[license]: LICENSE
+[brand-license]: BRAND-LICENSE.md
+
+[badge-en]: https://img.shields.io/badge/English-700018?style=flat-square
+[badge-zh]: https://img.shields.io/badge/%E4%B8%AD%E6%96%87-9CA3AF?style=flat-square
+
+[b-version]: https://img.shields.io/badge/Version-v0.7.0-700018?style=flat-square
+[b-license]: https://img.shields.io/badge/License-Apache--2.0-4CC3FF?style=flat-square
+[b-brand]: https://img.shields.io/badge/Brand-Rights%20Reserved-DFB303?style=flat-square
+[b-status]: https://img.shields.io/badge/Status-Active%20Development-4C1?style=flat-square
+[b-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square
+
+[b-python]: https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white
+[b-fastapi]: https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white
+[b-langchain]: https://img.shields.io/badge/LangChain-7FC8FF?style=flat-square&logo=langchain&logoColor=0B2233
+[b-pydantic]: https://img.shields.io/badge/Pydantic-E97064?style=flat-square&logo=pydantic&logoColor=white
+[b-react]: https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=20232A
+[b-ts]: https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white
+[b-vite]: https://img.shields.io/badge/Vite-9135FF?style=flat-square&logo=vite&logoColor=white
+[b-electron]: https://img.shields.io/badge/Electron-47848F?style=flat-square&logo=electron&logoColor=white
+[b-milvus]: https://img.shields.io/badge/Milvus-00A1EA?style=flat-square&logo=milvus&logoColor=white
+[b-es]: https://img.shields.io/badge/Elasticsearch-005571?style=flat-square&logo=elasticsearch&logoColor=white
+[b-redis]: https://img.shields.io/badge/Redis-FF4438?style=flat-square&logo=redis&logoColor=white
+[b-neo4j]: https://img.shields.io/badge/Neo4j-4581C3?style=flat-square&logo=neo4j&logoColor=white
+[b-docker]: https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white
