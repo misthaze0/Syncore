@@ -6,7 +6,7 @@ An enterprise AI workbench: multi-agent collaboration, hybrid-retrieval knowledg
 
 [![English][badge-en]][readme-en] [![中文][badge-zh]][readme-zh]
 
-![Version v0.7.0][b-version] [![License][b-license]][license] [![Brand assets][b-brand]][brand-license] ![Status Active development][b-status] ![PRs Welcome][b-prs]
+![Version v0.7.0][b-version] [![License][b-license]][license] [![Brand assets][b-brand]][brand-license] [![Download Windows][b-download]][release] ![Status Active development][b-status] ![PRs Welcome][b-prs]
 
 ![Python][b-python] ![FastAPI][b-fastapi] ![LangChain][b-langchain] ![Pydantic][b-pydantic] ![React][b-react] ![TypeScript][b-ts] ![Vite][b-vite] ![Electron][b-electron] ![Milvus][b-milvus] ![Elasticsearch][b-es] ![Redis][b-redis] ![Neo4j][b-neo4j] ![Docker][b-docker]
 
@@ -100,6 +100,21 @@ An enterprise AI workbench: multi-agent collaboration, hybrid-retrieval knowledg
 └── stop.ps1 / stop.bat      # stop services
 ```
 
+## Downloads
+
+Prebuilt Windows x64 installers are attached to **[Releases](https://github.com/misthaze0/Syncore/releases/tag/v0.7.0)**:
+
+| File | Form | Notes |
+|---|---|---|
+| [`Syncore.Setup.0.7.0.exe`](https://github.com/misthaze0/Syncore/releases/download/v0.7.0/Syncore.Setup.0.7.0.exe) | NSIS installer | 82.0 MB; adds Start Menu entries and shortcuts, uninstalls cleanly |
+| [`Syncore.0.7.0.exe`](https://github.com/misthaze0/Syncore/releases/download/v0.7.0/Syncore.0.7.0.exe) | portable | 81.7 MB; run it directly, writes nothing to the registry |
+
+Each package ships the Electron shell, the frontend build and the `backend/` sources, but **no Python interpreter and no dependencies**. Before the first launch you still need, on the target machine: Python 3.11+ with the backend dependencies installed (`pip install -e .` inside `resources\backend`), the four retrieval services running, and a filled-in `resources\backend\.env` copied from `.env.example`. If anything is missing the app pops up a dialog naming the exact cause and the command to fix it.
+
+The binaries are not code-signed, so Windows SmartScreen will warn about an unknown publisher — expected for now. The offline conversion engine (`backend/bin/`) and the brand assets are not distributed in the installer; see the corresponding sections below.
+
+> A fully self-contained build (embedded interpreter + pre-installed dependencies) is on the roadmap and not finished yet.
+
 ## Requirements
 
 - **Python** 3.11+
@@ -164,9 +179,9 @@ npm install
 npm run dist                   # output goes to desktop/release/ (gitignored)
 ```
 
-The installer contains the Electron shell, the frontend build and the `backend/` sources (portable + NSIS), but **no Python interpreter or dependencies**: end users still need Python 3.11+ (either `backend/.venv` or `python` on PATH), the backend dependencies installed via `pip install -e .`, and running Milvus / Elasticsearch / Redis / Neo4j services. If any of them is missing, the app shows a dialog with the exact cause and the command to fix it. The third-party conversion engine (`backend/bin/`) is not shipped inside the installer either — see below.
+The output in `desktop/release/` is a portable build plus an NSIS installer; what those files actually contain and require is described in the Downloads section above.
 
-> A fully self-contained build (embedded interpreter + pre-installed dependencies) is on the roadmap and not finished yet.
+The last step of `npm run dist` is `npm run verify:package`, which scans the packaged tree for leaked development credentials (it compares against every secret value in the local `backend/.env`) and runtime data (`data/`, `*.log`, any `.env.*` that is not `.env.example`). A hit fails the build. No installer ships unless this gate passes.
 
 ## Configuration
 
@@ -228,6 +243,7 @@ This repository uses a **dual-license** structure:
 [readme-zh]: README.md
 [license]: LICENSE
 [brand-license]: BRAND-LICENSE.md
+[release]: https://github.com/misthaze0/Syncore/releases/tag/v0.7.0
 
 [badge-en]: https://img.shields.io/badge/English-700018?style=flat-square
 [badge-zh]: https://img.shields.io/badge/%E4%B8%AD%E6%96%87-9CA3AF?style=flat-square
@@ -236,6 +252,7 @@ This repository uses a **dual-license** structure:
 [b-license]: https://img.shields.io/badge/License-Apache--2.0-4CC3FF?style=flat-square
 [b-brand]: https://img.shields.io/badge/Brand-Rights%20Reserved-DFB303?style=flat-square
 [b-status]: https://img.shields.io/badge/Status-Active%20Development-4C1?style=flat-square
+[b-download]: https://img.shields.io/badge/Download-Windows-2EA043?style=flat-square&logo=github&logoColor=white
 [b-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square
 
 [b-python]: https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white

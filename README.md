@@ -6,7 +6,7 @@
 
 [![中文][badge-zh]][readme-zh] [![English][badge-en]][readme-en]
 
-![版本 v0.7.0][b-version] [![代码许可][b-license]][license] [![品牌资产][b-brand]][brand-license] ![状态 活跃开发][b-status] ![PRs Welcome][b-prs]
+![版本 v0.7.0][b-version] [![代码许可][b-license]][license] [![品牌资产][b-brand]][brand-license] [![下载 Windows][b-download]][release] ![状态 活跃开发][b-status] ![PRs Welcome][b-prs]
 
 ![Python][b-python] ![FastAPI][b-fastapi] ![LangChain][b-langchain] ![Pydantic][b-pydantic] ![React][b-react] ![TypeScript][b-ts] ![Vite][b-vite] ![Electron][b-electron] ![Milvus][b-milvus] ![Elasticsearch][b-es] ![Redis][b-redis] ![Neo4j][b-neo4j] ![Docker][b-docker]
 
@@ -100,6 +100,21 @@
 └── stop.ps1 / stop.bat      # 停止服务
 ```
 
+## 下载
+
+Windows x64 预构建安装包见 **[Releases](https://github.com/misthaze0/Syncore/releases/tag/v0.7.0)**：
+
+| 文件 | 形态 | 说明 |
+|---|---|---|
+| [`Syncore.Setup.0.7.0.exe`](https://github.com/misthaze0/Syncore/releases/download/v0.7.0/Syncore.Setup.0.7.0.exe) | NSIS 安装器 | 82.0 MB；写入开始菜单与快捷方式，可正常卸载 |
+| [`Syncore.0.7.0.exe`](https://github.com/misthaze0/Syncore/releases/download/v0.7.0/Syncore.0.7.0.exe) | 便携版 | 81.7 MB；双击即用，不写注册表 |
+
+安装包里是 Electron 壳、前端构建产物与 `backend/` 源码，**不含 Python 解释器与依赖**。所以首次启动前仍要在本机准备好：Python 3.11+（并在安装目录的 `resources\backend` 下执行 `pip install -e .`）、四个正在运行的检索服务、以及填好的 `resources\backend\.env`（从 `.env.example` 复制）。缺任何一项，应用会弹窗列出具体原因与修复命令。
+
+安装包未做代码签名，Windows SmartScreen 会提示「未知发布者」，属预期行为。离线转换引擎（`backend/bin/`）与品牌资源不随包分发，见下文对应小节。
+
+> 完全免部署（内嵌解释器 + 预装依赖）的版本在路线上，尚未完成。
+
 ## 环境要求
 
 - **Python** 3.11+
@@ -164,9 +179,9 @@ npm install
 npm run dist                   # 输出到 desktop/release/（已 gitignore）
 ```
 
-安装包内含 Electron 壳、前端构建产物与 `backend/` 源码（便携版 + NSIS 安装器），但**不含 Python 解释器与依赖**：用户机器上仍需要 Python 3.11+（`backend/.venv` 或 PATH 上的 python）、`pip install -e .` 装好的后端依赖，以及运行中的 Milvus / Elasticsearch / Redis / Neo4j。缺任何一项，应用会弹窗列出具体原因与修复命令。内置的第三方文件转换引擎（`backend/bin/`）也不在安装包内，见下文。
+`desktop/release/` 输出便携版与 NSIS 安装器；产物内容与运行前提见上文「下载」小节。
 
-> 完全免部署（内嵌解释器 + 预装依赖）的版本在路线上，尚未完成。
+构建脚本最后一步会跑 `npm run verify:package`：扫描打包产物里是否残留开发凭据（逐条比对 `backend/.env` 的密钥值）或运行数据（`data/`、`*.log`、非 `.example` 的 `.env.*`），命中即构建失败。这道关卡是发布前的固定流程，任何安装包都必须先通过它。
 
 ## 配置
 
@@ -228,6 +243,7 @@ cd frontend && npm run typecheck
 [readme-en]: README.en.md
 [license]: LICENSE
 [brand-license]: BRAND-LICENSE.md
+[release]: https://github.com/misthaze0/Syncore/releases/tag/v0.7.0
 
 [badge-zh]: https://img.shields.io/badge/%E4%B8%AD%E6%96%87-700018?style=flat-square
 [badge-en]: https://img.shields.io/badge/English-9CA3AF?style=flat-square
@@ -236,6 +252,7 @@ cd frontend && npm run typecheck
 [b-license]: https://img.shields.io/badge/%E4%BB%A3%E7%A0%81%E8%AE%B8%E5%8F%AF-Apache--2.0-4CC3FF?style=flat-square
 [b-brand]: https://img.shields.io/badge/%E5%93%81%E7%89%8C%E8%B5%84%E4%BA%A7-%E4%BF%9D%E7%95%99%E6%89%80%E6%9C%89%E6%9D%83%E5%88%A9-DFB303?style=flat-square
 [b-status]: https://img.shields.io/badge/%E7%8A%B6%E6%80%81-%E6%B4%BB%E8%B7%83%E5%BC%80%E5%8F%91-4C1?style=flat-square
+[b-download]: https://img.shields.io/badge/%E4%B8%8B%E8%BD%BD-Windows-2EA043?style=flat-square&logo=github&logoColor=white
 [b-prs]: https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square
 
 [b-python]: https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white
