@@ -506,9 +506,9 @@ async def get_agent_event_stream(
     正文进本轮 HumanMessage（`state.initial_state`），元数据随轮次落盘 ——
     重放时前端能看到「这条消息带了哪些附件」。
 
-    其中 `done` 可能带一个 `files` 字段（本轮产出的文件），由本轮事件流派生 ——
-    见 [`reference/api/sse.md`](../../docs/reference/api/sse.md)。它是**已有事件上的字段**，
-    不是新增事件类型；派生函数只有一份（`conversations/files.py`），落盘时用的是同一个。
+    其中 `done` 可能带一个 `files` 字段（本轮产出的文件），由本轮事件流派生。
+    它是**已有事件上的字段**，不是新增事件类型；派生函数只有一份
+    （`conversations/files.py`），落盘时用的是同一个。
 
     ★ 为什么这一层薄包装是有价值的
 

@@ -1,0 +1,81 @@
+# Syncore 依赖服务编排 —— 本地开发基线
+#
+# 拓扑与 backend/.env.example 里的注释完全一致：
+#   - Milvus v3.0.1 独立模式 + 外置 etcd（quay.io/coreos/etcd:v3.5.5），同处 milvus-net；
+#     不使用 MinIO：COMMON_STORAGETYPE=local，向量数据落在 ./docker/milvus-data
+#   - Redis 8：官方镜像已内置 RediSearch + RedisJSON（LangGraph Checkpointer 需要）
+#   - Elasticsearch single-node + xpack.security=false，与 backend/.env.example 的
+#     ES_URL=http://localhost:9200 对应，无需账号密码
+#   - Neo4j enterprise：NEO4J_AUTH 必须与 backend/.env 的 GRAPH_PASSWORD 一致
+#
+# 启动：docker compose up -d
+# 注意：Neo4j 首次启动约需 80 秒才 ready；Milvus 就绪后 19530 才可连。
+# 镜像版本只是基线，按需调整；端口与口令约定不要单方面改（要和 backend/.env 对齐）。
+
+services:
+  milvus-etcd:
+    container_name: milvus-etcd
+    image: quay.io/coreos/etcd:v3.5.5
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    volumes:
+      - ./docker/etcd:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    networks:
+      - milvus-net
+
+  my_milvus:
+    container_name: my_milvus
+    image: milvusdb/milvus:v3.0.1
+    command: ["milvus", "run", "standalone"]
+    environment:
+      - ETCD_ENDPOINTS=milvus-etcd:2379
+      - COMMON_STORAGETYPE=local
+    volumes:
+      - ./docker/milvus-data:/var/lib/milvus
+    ports:
+      - "19530:19530"   # gRPC（backend 检索用）
+      - "9091:9091"     # HTTP 健康检查 /healthz 与指标
+    depends_on:
+      - milvus-etcd
+    networks:
+      - milvus-net
+
+  my-redis:
+    container_name: my-redis
+    image: redis:8
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./docker/redis/data:/data
+
+  my-es:
+    container_name: my-es
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.16.3
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./docker/es-data:/usr/share/elasticsearch/data
+
+  my_neo4j:
+    container_name: my_neo4j
+    image: neo4j:enterprise
+    environment:
+      - NEO4J_AUTH=neo4j/xjms-graph-2026
+    ports:
+      - "7474:7474"     # 浏览器控制台
+      - "7687:7687"     # Bolt（backend 图检索用）
+    volumes:
+      - ./docker/neo4j-data:/data
+
+networks:
+  milvus-net:
+    driver: bridge

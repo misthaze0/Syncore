@@ -487,7 +487,7 @@ class TaskStore:
         取一个任务的进度快照。
 
         ★ 超限时会带 `total_steps` —— 界面上据此说明「只显示了最近 N 步」。
-        悄悄截断与填 0 是同一类谎报（`reference/api/sse.md` 对 done.files 的同一约定）。
+        悄悄截断与填 0 是同一类谎报（与 `done.files` 可选字段同一约定）。
         """
         view: TaskProgressView = TaskProgressView(
             task_id=task_id, status="", entries=[]

@@ -152,7 +152,7 @@ class Settings(BaseSettings):
     EMBEDDING_MAX_BATCH: int = 20
 
     # --- 后端 = local 时生效 ---
-    #: 本地模型：**目录路径**（如 `B:/model/bge-small-zh-v1.5`）或 HuggingFace id。
+    #: 本地模型：**目录路径**（如 `C:/models/bge-small-zh-v1.5`）或 HuggingFace id。
     #: 用目录路径的好处是完全离线、不受网络与镜像影响。
     #: 中文短文本检索的性价比之选：4 层 BERT，512 维，CPU 单条约几毫秒。
     EMBEDDING_LOCAL_MODEL: str = "BAAI/bge-small-zh-v1.5"
@@ -401,7 +401,7 @@ class Settings(BaseSettings):
     # 云端模型名（仅 dashscope 后端使用）
     VOICE_STT_MODEL: str = "qwen3-asr-flash"
     # 本地模型目录（留空 = 本地模型根目录下的 sherpa-onnx-sense-voice-…，
-    # 根目录的约定同 LOCAL_MODEL_DIR：本机是 B:/model）
+    # 根目录的约定同 LOCAL_MODEL_DIR）
     VOICE_STT_LOCAL_MODEL: str = ""
     VOICE_STT_TIMEOUT_SECONDS: float = 60.0
     # 桌面助手唤醒（sherpa-onnx KWS）模型目录；留空 = 模型根目录下的
@@ -839,7 +839,7 @@ class Settings(BaseSettings):
 
     #: 本地模型目录扫描的根（前端「检索模型」面板列出本机已下载的模型用）。
     #: 留空 = 自动推断：取当前两个本地模型路径的**公共父目录** ——
-    #: 本机把 bge-small-zh-v1.5 与 bge-reranker-v2-m3 都放在 `B:/model` 下，
+    #: 比如把 bge-small-zh-v1.5 与 bge-reranker-v2-m3 放在同一本地目录下，
     #: 所以不配也能列出候选，不必为了一个候选清单多记一个路径。
     LOCAL_MODEL_DIR: str = ""
 

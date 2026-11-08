@@ -67,9 +67,13 @@ test-*.cjs
 /backend/tools/ragas_*
 
 # Docker 运行时数据（配置保留，数据目录忽略）
-# ⚠️ Milvus / Neo4j 的数据不在仓库里：它们 bind 到宿主机 B:\MilvusData / B:\Neo4jData
-#    （见根目录 docker-compose.yml），所以这里只需要忽略 redis 的。
+# ⚠️ Milvus / Neo4j 的数据不在仓库里：它们 bind 到宿主机本地目录
+#    （见根目录 docker-compose.yml 的 volumes），这里忽略全部数据目录。
 docker/redis/data/
+docker/es-data/
+docker/milvus-data/
+docker/neo4j-data/
+docker/etcd/
 
 # Docker volumes
 volumes/

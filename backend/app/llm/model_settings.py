@@ -611,7 +611,7 @@ async def _ping() -> Tuple[str, str]:
     ★ 为什么不用 `max_tokens` 限制长度
 
     本项目网关在有输出上限时会先把预算花在**不可见的思考**上，正文返回空串而
-    HTTP 仍是 200（见 `docs/reference/invariants.md` 里关于该网关的记载）。
+    HTTP 仍是 200。
     自检要的恰恰是「正文有没有回来」，加限制等于自己制造假阴性。
 
     ★ 为什么要切思考

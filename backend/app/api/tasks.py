@@ -346,7 +346,7 @@ async def get_task(
     单个任务的完整进度与结果。
 
     ★ 进度被截断时响应里带 `total_steps`
-    悄悄截断与填 0 是同一类谎报（`reference/api/sse.md` 对 `done.files` 的同一约定）：
+    悄悄截断与填 0 是同一类谎报（与 `done.files` 可选字段同一约定）：
     用户以为就这 5 步，实际还有 20 步没显示。
     """
     record = _load_or_404(task_id)

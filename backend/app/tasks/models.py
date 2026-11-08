@@ -18,7 +18,7 @@
 
 `started_at` / `finished_at` / `error` / `result` / `usage` / `files`
 在不该有的时候**键都不存在**，不是 `None`、不是 `""`、不是 `0`。
-理由见 `reference/api/sse.md`：填 0 在界面上看起来像个真数据，比不显示更糟。
+理由：填 0 在界面上看起来像个真数据，比不显示更糟。
 """
 
 from __future__ import annotations
@@ -239,7 +239,7 @@ class TaskProgressView(TypedDict, total=False):
     task_id: str
     status: str
     #: ★ 可选：真的超了上限才带。界面上据此说「只显示了最近 N 步」，
-    #: 不能悄悄截断（`reference/api/sse.md` 对 done.files 的同一约定）。
+    #: 不能悄悄截断（与 `done.files` 可选字段同一约定）。
     total_steps: int
     entries: list[ProgressEntry]
 

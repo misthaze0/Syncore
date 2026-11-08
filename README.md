@@ -126,7 +126,13 @@ Windows x64 预构建安装包见 **[Releases](https://github.com/misthaze0/Sync
 
 ### 1. 启动基础设施
 
-用 Docker 启动以下四个服务（对外端口正确即可，容器名随意）：
+需要以下四个服务。仓库根目录的 `docker-compose.yml` 已按这套拓扑写好，直接：
+
+```powershell
+docker compose up -d
+```
+
+（Neo4j 首次启动约需 80 秒才 ready。）也可以手工起，对外端口正确即可、容器名随意：
 
 | 服务 | 端口 | 说明 |
 |---|---|---|
@@ -170,6 +176,8 @@ npm run dev                    # http://localhost:5173
 .\start.ps1                    # 自动预检 Docker、依赖与端口，分别开窗启动前后端
 .\stop.ps1                     # 按端口停止服务（-Deps 同时停止 Docker 容器）
 ```
+
+`start.ps1` 按「`$env:SYNCORE_PYTHON` → `backend\.venv` → PATH 上的 `python`」的顺序选解释器：后端依赖装在 venv 之外（如 conda 环境）时，先设 `$env:SYNCORE_PYTHON` 指向该解释器即可。
 
 ### 打包桌面端
 

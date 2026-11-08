@@ -463,8 +463,7 @@ async def dispatch_node(state: dict[str, Any], config: RunnableConfig) -> dict[s
             continue
         dispatched.append(dict(record))
         task_ids[index] = str(record["task_id"])
-        # ★ `subtask` 事件是新增的 SSE 事件类型（不变量 15：三处同步）——
-        # `types/index.ts` / 本模块 / `docs/reference/api/sse.md`
+        # ★ `subtask` 事件是新增的 SSE 事件类型（不变量 15：与前端 `types/index.ts` 保持同步）
         subtask_event = {
             "type": "subtask",
             "task_id": str(record.get("task_id")),

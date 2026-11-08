@@ -263,7 +263,7 @@ class ApiReranker(RerankBackend):
 class LocalCrossEncoderReranker(RerankBackend):
     """
     本地 Cross-Encoder（默认 `BAAI/bge-reranker-base`；本项目实机跑
-    `bge-reranker-v2-m3`，见 `docs/reference/configuration.md` § 七）。
+    `bge-reranker-v2-m3`）。
 
     与 `core/embedding_factory._LocalEmbedder` 完全同一套生命周期：
     惰性加载 → 双检锁 → 线程池执行，外加「配置变了就换新实例」。

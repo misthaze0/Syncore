@@ -126,7 +126,13 @@ The binaries are not code-signed, so Windows SmartScreen will warn about an unkn
 
 ### 1. Start the infrastructure
 
-Start these four services with Docker (container names are up to you; only the ports matter):
+You need these four services. The `docker-compose.yml` at the repository root encodes exactly this topology:
+
+```powershell
+docker compose up -d
+```
+
+(Neo4j takes about 80 seconds to become ready on first start.) Alternatively start them by hand — container names are up to you, only the ports matter:
 
 | Service | Port | Notes |
 |---|---|---|
@@ -170,6 +176,8 @@ Once the backend environment is ready, from the repository root:
 .\start.ps1                    # pre-checks Docker, dependencies and ports, then starts backend and frontend in separate windows
 .\stop.ps1                     # stops services by port (-Deps also stops Docker containers)
 ```
+
+`start.ps1` picks the interpreter in this order: `$env:SYNCORE_PYTHON` → `backend\.venv` → `python` on PATH. If your backend dependencies live outside a venv (e.g. a conda environment), point `$env:SYNCORE_PYTHON` at that interpreter first.
 
 ### Building the desktop app
 

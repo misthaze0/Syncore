@@ -16,7 +16,7 @@
 
 ★ 模型从哪来
 
-默认放在本地模型根目录（与 Embedding / 精排同一个约定，本机是 `B:/model`）下的
+默认放在本地模型根目录（与 Embedding / 精排同一个约定）下的
 `sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17` —— 可用
 `VOICE_STT_LOCAL_MODEL` 直接指到别处。目录里需要 `model.int8.onnx` + `tokens.txt`。
 模型不随仓库提交；缺失时 `/voice/status` 如实报 unavailable，识别请求返回 503。
@@ -62,7 +62,7 @@ _SPECIAL_TAG = re.compile(r"<\|[^|]*\|>")
 def model_root() -> Path:
     """
     本地模型根目录：与检索模型同一个约定（显式 `LOCAL_MODEL_DIR` 优先，
-    否则从两个本地检索模型的路径推断，本机都放在 `B:/model`）。
+    否则从两个本地检索模型的路径推断）。
 
     ⚠️ 根目录必须是 ASCII 路径：ONNX Runtime 的 C++ 侧遇到中文路径会打不开模型。
     """

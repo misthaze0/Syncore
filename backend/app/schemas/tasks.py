@@ -73,7 +73,7 @@ class TaskOut(BaseModel):
     usage: Optional[dict[str, int]] = None
     files: Optional[list[dict[str, str]]] = None
     #: ★ 可选：真的超了上限才带。界面上据此说明「只显示了最近 N 步」——
-    #: 悄悄截断与填 0 是同一类谎报（`reference/api/sse.md` 对 done.files 的同一约定）
+    #: 悄悄截断与填 0 是同一类谎报（与 `done.files` 可选字段同一约定）
     total_steps: Optional[int] = None
     progress: list[ProgressEntryOut] = Field(default_factory=list)
     #: 这个任务是从哪条路派出来的：`supervisor` / `board` / `employee_private`。
