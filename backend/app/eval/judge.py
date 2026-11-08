@@ -21,9 +21,9 @@
 2. Ragas 0.4.x API 完全重构，老实现全部不兼容；
 3. 自建的 BuiltinJudge 与 Ragas 官方口径可能有微小漂移，分数不可比。
 
-**官方口径评估改走隔离环境**：
-    conda activate ragas_eval
-    & "B:\\Anconda3\\envs\\ragas_eval\\python.exe" tools/ragas_eval.py -i ... -o ...
+**官方口径评估改走隔离环境**：在一个与后端运行时完全分开的虚拟环境里装 Ragas 并跑
+对照评估（例如 `python -m venv .venv-ragas`），这样它的降级依赖只影响那个环境，
+不会把主环境的 langchain-openai / openai 拖下去。评估脚本与产物不入库。
 
 本模块保留接口（`JudgeBackend` 抽象类、`AnswerEvaluation`、`evaluate_answer`），
 但 `get_judge()` 恒返回 None——答案层指标默认跳过。
@@ -118,11 +118,10 @@ class JudgeBackend(abc.ABC):
 # ---------- 后端工厂 ----------
 # 两个实现（BuiltinJudge / RagasJudge）已移除。
 # get_judge() 恒返回 None，答案层指标默认跳过。
-# 官方 Ragas 评估改走隔离环境（见 tools/ragas_eval.py）。
+# 官方 Ragas 评估改走与主环境隔离的独立虚拟环境，评估脚本不入库。
 _DEGRADED_REASON = (
     "判定后端已移除：自建 BuiltinJudge 与官方 RagasJudge 均不再维护。"
-    "官方口径评估改走隔离 conda 环境（ragas_eval），"
-    "入口见 tools/ragas_eval.py"
+    "官方口径评估请在独立虚拟环境里跑，避免 Ragas 拖降主环境的 langchain-openai / openai。"
 )
 
 _backend: Optional[JudgeBackend] = None
@@ -135,7 +134,7 @@ def get_judge(force_reload: bool = False) -> Optional[JudgeBackend]:
     答案质量的近似值比没有值更危险：它会被当成真信号写进结论。
 
     本模块历史上有 BuiltinJudge（自建 LLM-as-judge）和 RagasJudge（官方 Ragas）
-    两个实现，均已移除。官方口径评估请走 ragas_eval 隔离环境。
+    两个实现，均已移除。官方口径评估请在独立虚拟环境里跑。
     """
     global _backend, _backend_error
 
@@ -214,7 +213,7 @@ async def evaluate_answer(
     一条失败就整批作废，会让评估脚本在真实使用中完全不可靠。
 
     当前无可用判定后端（get_judge 恒返回 None），直接返回带错误标记的空结果。
-    官方 Ragas 评估改走隔离环境 tools/ragas_eval.py。
+    官方 Ragas 评估改在独立虚拟环境里跑，脚本不入库。
     """
     backend = backend or get_judge()
     result = AnswerEvaluation(question=question, answer=answer)

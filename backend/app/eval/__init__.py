@@ -24,12 +24,12 @@
 | `metrics.py`     | Recall@k / MRR / nDCG / Precision      | 无（纯函数）              |
 | `attribution.py` | 四级漏斗 → Badcase 三分类               | 无（纯函数）              |
 | `judge.py`       | 答案质量判定**接口层**（JudgeBackend 抽象类 + evaluate_answer 封装）| 无可用后端（见下）        |
+| `runner.py`      | 探针索引 + 跑批编排                     | Milvus + ES + Embedding  |
+| `report.py`      | Markdown 报告 + 结论生成                | 无                       |
 
 **历史**：本模块历史上有 BuiltinJudge（自建 LLM-as-judge）和 RagasJudge（官方 Ragas）
 两个实现。BuiltinJudge 与 Ragas 官方口径可能有漂移；Ragas 会降级 langchain-openai / openai
-打挂 Agent 基线。两者均已移除——官方口径评估改走隔离 conda 环境（`tools/ragas_eval.py`）。
-| `runner.py`      | 探针索引 + 跑批编排                     | Milvus + ES + Embedding  |
-| `report.py`      | Markdown 报告 + 结论生成                | 无                       |
+打挂 Agent 基线。两者均已移除——官方口径评估改在与主环境完全隔离的独立虚拟环境里跑。
 
 前四个模块里，`golden` / `metrics` / `attribution` **完全不依赖任何外部服务**，
 因此可以被单测完整覆盖 —— 评估逻辑本身正确性不该靠「跑一次真实链路」来验证。
@@ -37,7 +37,7 @@
 ★ 零新增依赖
 
 - 判定后端已移除，答案层指标默认跳过
-- 官方 Ragas 评估走隔离 conda 环境（ragas_eval），入口 tools/ragas_eval.py
+- 官方 Ragas 评估在独立虚拟环境里跑，脚本与产物不入库
 """
 
 from __future__ import annotations

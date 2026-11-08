@@ -55,21 +55,26 @@ function Test-ContainerUp {
 }
 
 function Get-PythonCmd {
-    if (Test-Path $VenvPython) { return $VenvPython }
-    # 回退：本机后端依赖装在 Anaconda（backend 无 .venv 时用它）。
-    # 不要回落到「全局 python」—— 全局那个是托管解释器，没装 fastapi/langgraph，
-    # 用它起后端口会直接 ImportError。
-    $anacondaPy = "B:\Anconda3\python.exe"
-    if (Test-Path $anacondaPy) {
-        Write-Warn ".venv 不存在，使用 Anaconda python（本机后端依赖所在）。"
-        return $anacondaPy
+    # 解释器来源按优先级三档，都不写死某台机器上的路径：
+    #   1. $env:SYNCORE_PYTHON —— 显式指定，用于后端依赖装在 venv 之外的环境
+    #   2. backend\.venv —— 推荐做法（python -m venv .venv 后 pip install -e .）
+    #   3. PATH 上的 python —— 兜底；它很可能是没装依赖的托管解释器
+    if ($env:SYNCORE_PYTHON) {
+        if (Test-Path $env:SYNCORE_PYTHON) {
+            Write-Ok "Using interpreter from SYNCORE_PYTHON: $env:SYNCORE_PYTHON"
+            return $env:SYNCORE_PYTHON
+        }
+        Write-Err "SYNCORE_PYTHON points at '$env:SYNCORE_PYTHON', which does not exist. Fix the variable or clear it."
+        exit 1
     }
+    if (Test-Path $VenvPython) { return $VenvPython }
     $globalPyCmd = Get-Command python -ErrorAction SilentlyContinue
     if ($globalPyCmd -and $globalPyCmd.Source) {
-        Write-Warn ".venv 与 Anaconda 均不存在，回退全局 python（可能缺依赖）。"
+        Write-Warn "No backend\.venv — falling back to python on PATH. If it lacks fastapi/langgraph the backend will die with ImportError."
+        Write-Warn "Recommended: cd backend; python -m venv .venv; .\.venv\Scripts\pip install -e ."
         return "python"
     }
-    Write-Err "找不到 python。请先安装或激活虚拟环境。"
+    Write-Err "No usable Python found. Install Python 3.11+, create backend\.venv, or point SYNCORE_PYTHON at an interpreter that already has the backend dependencies."
     exit 1
 }
 
