@@ -164,7 +164,9 @@ npm install
 npm run dist                   # output goes to desktop/release/ (gitignored)
 ```
 
-The desktop build bundles the frontend build and the backend into the installer (portable + NSIS), so end users do not need to deploy anything.
+The installer contains the Electron shell, the frontend build and the `backend/` sources (portable + NSIS), but **no Python interpreter or dependencies**: end users still need Python 3.11+ (either `backend/.venv` or `python` on PATH), the backend dependencies installed via `pip install -e .`, and running Milvus / Elasticsearch / Redis / Neo4j services. If any of them is missing, the app shows a dialog with the exact cause and the command to fix it. The third-party conversion engine (`backend/bin/`) is not shipped inside the installer either — see below.
+
+> A fully self-contained build (embedded interpreter + pre-installed dependencies) is on the roadmap and not finished yet.
 
 ## Configuration
 

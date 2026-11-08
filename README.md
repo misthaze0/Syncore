@@ -164,7 +164,9 @@ npm install
 npm run dist                   # 输出到 desktop/release/（已 gitignore）
 ```
 
-桌面端会把前端构建产物与后端一并打进安装包（便携版 + NSIS 安装器），无需用户自行部署。
+安装包内含 Electron 壳、前端构建产物与 `backend/` 源码（便携版 + NSIS 安装器），但**不含 Python 解释器与依赖**：用户机器上仍需要 Python 3.11+（`backend/.venv` 或 PATH 上的 python）、`pip install -e .` 装好的后端依赖，以及运行中的 Milvus / Elasticsearch / Redis / Neo4j。缺任何一项，应用会弹窗列出具体原因与修复命令。内置的第三方文件转换引擎（`backend/bin/`）也不在安装包内，见下文。
+
+> 完全免部署（内嵌解释器 + 预装依赖）的版本在路线上，尚未完成。
 
 ## 配置
 
