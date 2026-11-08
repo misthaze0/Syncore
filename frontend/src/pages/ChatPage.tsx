@@ -644,9 +644,10 @@ export function ChatPage({
               </>
             ) : historyLoading ? null : (
               /* 欢迎态 = 一张品牌主视觉：mark → 品牌标识 → 主张 → 绛红细线 → 内嵌输入框
-                 人设卡设了头像 / 开场白时，主视觉跟着人设走（那才是「她的脸」） */
+                 只有助理页的主视觉跟着人设走（那才是「她的脸」）；
+                 普通对话页是产品门面，永远用品牌字标，不借人设的脸 */
               <div className="welcome">
-                {persona?.avatar ? (
+                {chrome === 'assistant' && persona?.avatar ? (
                   <img className="welcome__mark welcome__mark--persona" src={persona.avatar} alt="" aria-hidden="true" />
                 ) : (
                   <img className="welcome__mark welcome__mark--brand" src={brandMark} alt="Syncore" />
