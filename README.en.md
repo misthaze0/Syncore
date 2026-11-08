@@ -23,10 +23,11 @@ An enterprise AI workbench: multi-agent collaboration, hybrid-retrieval knowledg
   </tr>
   <tr>
     <td align="center"><b>Knowledge base</b><br /><img src="docs/screenshots/knowledge.png" width="440" alt="Knowledge base: hybrid retrieval and index status" /></td>
-    <td align="center"><b>Workspace</b><br /><img src="docs/screenshots/workspace.png" width="440" alt="Workspace: digital coworkers and group chat" /></td>
+    <td align="center"><b>Workflow editor</b><br /><img src="docs/screenshots/workflow.png" width="440" alt="Workflow editor: node canvas and config panel" /></td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><b>Skill marketplace</b><br /><img src="docs/screenshots/market.png" width="660" alt="Skill marketplace: official skills and bundles" /></td>
+    <td align="center"><b>Workspace</b><br /><img src="docs/screenshots/workspace.png" width="440" alt="Workspace: digital coworkers and group chat" /></td>
+    <td align="center"><b>Skill marketplace</b><br /><img src="docs/screenshots/market.png" width="440" alt="Skill marketplace: official skills and bundles" /></td>
   </tr>
 </table>
 

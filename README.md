@@ -23,10 +23,11 @@
   </tr>
   <tr>
     <td align="center"><b>知识库</b><br /><img src="docs/screenshots/knowledge.png" width="440" alt="知识库：混合检索与索引状态" /></td>
-    <td align="center"><b>工作空间</b><br /><img src="docs/screenshots/workspace.png" width="440" alt="工作空间：数字同事与群聊协作" /></td>
+    <td align="center"><b>工作流编辑器</b><br /><img src="docs/screenshots/workflow.png" width="440" alt="工作流编辑器：节点画布与配置面板" /></td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><b>技能市场</b><br /><img src="docs/screenshots/market.png" width="660" alt="技能市场：官方技能与组合包" /></td>
+    <td align="center"><b>工作空间</b><br /><img src="docs/screenshots/workspace.png" width="440" alt="工作空间：数字同事与群聊协作" /></td>
+    <td align="center"><b>技能市场</b><br /><img src="docs/screenshots/market.png" width="440" alt="技能市场：官方技能与组合包" /></td>
   </tr>
 </table>
 
