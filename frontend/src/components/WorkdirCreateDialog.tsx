@@ -54,7 +54,7 @@ const COLORS = [
 
 const NAME_MAX = 40;
 
-/** `B:\My Notebook\量化选股` → `量化选股`（名称默认取目录名，两种分隔符都要认） */
+/** `C:\Users\me\Documents\我的项目` → `我的项目`（名称默认取目录名，两种分隔符都要认） */
 function basename(p: string): string {
   const parts = p.split(/[\\/]/).filter(Boolean);
   return parts[parts.length - 1] ?? p;

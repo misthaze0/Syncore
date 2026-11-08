@@ -419,19 +419,16 @@ function killBackendTree() {
 }
 
 /**
- * 解析后端 python：backend/.venv → 本机 Anaconda → PATH 上的 python。
- * 与 start.ps1 的 Get-PythonCmd 同一顺序。不能只依赖 PATH —— 全局 python
- * 可能是托管解释器，没装 fastapi/langgraph，起后端会直接 ImportError。
+ * 解析后端 python：backend/.venv → PATH 上的 python。
+ * 不能只依赖 PATH —— 全局 python 可能是托管解释器，没装 fastapi/langgraph，
+ * 起后端会直接 ImportError，所以优先用安装目录里的虚拟环境。
+ * 注意安装包只含「壳 + 前端产物 + 后端源码」，不带解释器也不带依赖，
+ * 缺环境时由 ensureBackend 的超时弹窗给出可执行的修复步骤。
  */
 function resolvePython() {
   if (process.platform !== 'win32') return 'python3';
-  const candidates = [
-    path.join(backendDir(), '.venv', 'Scripts', 'python.exe'),
-    'B:\\Anconda3\\python.exe',
-  ];
-  for (const c of candidates) {
-    if (fs.existsSync(c)) return c;
-  }
+  const venv = path.join(backendDir(), '.venv', 'Scripts', 'python.exe');
+  if (fs.existsSync(venv)) return venv;
   return 'python';
 }
 
@@ -1048,8 +1045,8 @@ async function ensureBackend() {
       '后端启动失败',
       `后端服务在 90 秒内没有就绪。\n\n` +
         `常见原因：\n` +
-        `1. 未安装 Python 依赖（backend/ 目录下执行 pip install -r requirements.txt）；\n` +
-        `2. 找不到可用的 Python（本壳依次尝试 backend\\.venv → B:\\Anconda3 → PATH 上的 python）；\n` +
+        `1. 未安装 Python 依赖（backend/ 目录下执行 pip install -e .）；\n` +
+        `2. 找不到可用的 Python（本壳依次尝试 backend\\.venv → PATH 上的 python）；\n` +
         `3. 端口 ${BACKEND_PORT} 被非本应用的程序占用；\n` +
         `4. 首次启动较慢（加载本地模型），可再等一会儿重试。\n\n` +
         `详细日志：${backendLogPath()}`,
